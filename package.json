@@ -1,6 +1,6 @@
 {
   "name": "ats-cv",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ATS d'un seul fichier : grille de critères éditable, notation des CV et décision automatique (accepté / à revoir / rejeté).",
   "type": "module",
   "bin": {

@@ -28,6 +28,7 @@ const drapeau = (nom, defaut) => {
 };
 const portDemande = Number(drapeau("--port", process.env.PORT || 5173));
 const page = await readFile(join(racine, "index.html"));
+const version = JSON.parse(await readFile(join(racine, "package.json"), "utf8")).version;
 
 const serveur = createServer((req, res) => {
   const chemin = (req.url || "/").split("?")[0];
@@ -53,7 +54,7 @@ serveur.on("error", (err) => {
 
 function demarre() {
   const url = `http://localhost:${port}`;
-  console.log(`Présélection des CV — ${url}`);
+  console.log(`Présélection des CV v${version} — ${url}`);
   console.log("Ctrl+C pour arrêter.");
   if (args.includes("--open")) {
     const cmd = process.platform === "darwin" ? "open" : process.platform === "win32" ? "start" : "xdg-open";
