@@ -5,6 +5,19 @@ Un ATS en un seul fichier : `index.html`. Zéro dépendance d'exécution.
 Vous remplissez la grille de critères, vous déposez les CV, l'algorithme accepte, met à
 revoir ou rejette chaque candidature, et vous explique pourquoi.
 
+## Ouvrir en dix secondes, sans rien taper
+
+1. Ouvrez la page du dépôt : <https://github.com/pz2hsv99sy-png/ATS-CV-ICEA>
+2. Cliquez sur `index.html` dans la liste des fichiers.
+3. Bouton **Download raw file** (l'icône de téléchargement, en haut à droite du fichier).
+4. Double-cliquez le fichier téléchargé.
+
+Ni Node, ni pnpm, ni terminal. Le fichier fonctionne ensuite hors ligne.
+
+Pour les commandes ci-dessous, ne les recopiez pas à la main : sur la page du dépôt,
+chaque bloc de code a un bouton « copier » à droite. Un tiret bas à la place d'un trait
+d'union, ou `pnj` à la place de `png`, et GitHub répond 404.
+
 ## Le moteur de décision
 
 Chaque CV reçoit un score sur 100 : cinq critères pondérés dont vous fixez vous-même les
