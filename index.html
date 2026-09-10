@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- @artifact:start -->
+<title>Tri des CV — ICEA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ------------------------------------------------------------------ *
+ * Jetons — thème clair par défaut, redéfinis pour le sombre plus bas. *
+ * ------------------------------------------------------------------ */
+:root{
+  --ground:#EDEFF2; --surface:#FFFFFF; --surface-2:#F5F7F9; --surface-3:#E9EDF1;
+  --ink:#101922; --ink-2:#4A5C6B; --ink-3:#7E8FA0;
+  --line:#DCE2E8; --line-strong:#C3CCD6;
+  --accent:#4F63D8; --accent-soft:#E7EAFB; --accent-ink:#3948A8;
+  --on-dark:#F7F9FB;
+  --focus:#4F63D8;
+  --good:#17855C; --good-soft:#DFF1E9;
+  --warn:#A96412; --warn-soft:#F7EBDC;
+  --bad:#C2402F;  --bad-soft:#F8E4E1;
+  --st-nouveau:#0E8FA8; --st-presel:#4F63D8; --st-entretien:#A96412;
+  --st-offre:#17855C;   --st-ecarte:#8595A4;
+  --ramp-1:#C9D0F7; --ramp-2:#A3AEEF; --ramp-3:#7C8BE6; --ramp-4:#5C6FDE; --ramp-5:#3B4CB4;
+  --grid:#EAEEF2;
+  --shadow:0 1px 2px rgba(16,25,34,.06), 0 8px 24px -12px rgba(16,25,34,.18);
+  --shadow-lift:0 2px 4px rgba(16,25,34,.08), 0 18px 40px -16px rgba(16,25,34,.28);
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1015; --surface:#12181F; --surface-2:#171F28; --surface-3:#1E2833;
+    --ink:#EAEFF4; --ink-2:#A3B2C0; --ink-3:#75868F;
+    --line:#252F3A; --line-strong:#354352;
+    --accent:#8B99FF; --accent-soft:#20263F; --accent-ink:#A9B3FF;
+    --on-dark:#0B1015;
+    --focus:#8B99FF;
+    --good:#2AA576; --good-soft:#12281F;
+    --warn:#B8801F; --warn-soft:#2A2113;
+    --bad:#E0705C;  --bad-soft:#2E1A17;
+    --st-nouveau:#149FAE; --st-presel:#7C7BF2; --st-entretien:#B8801F;
+    --st-offre:#2AA576;   --st-ecarte:#6C7C8B;
+    --ramp-1:#2B3358; --ramp-2:#3D4A86; --ramp-3:#5462B8; --ramp-4:#6D7BE0; --ramp-5:#94A0F5;
+    --grid:#1D262F;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 18px 40px -16px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1015; --surface:#12181F; --surface-2:#171F28; --surface-3:#1E2833;
+  --ink:#EAEFF4; --ink-2:#A3B2C0; --ink-3:#75868F;
+  --line:#252F3A; --line-strong:#354352;
+  --accent:#8B99FF; --accent-soft:#20263F; --accent-ink:#A9B3FF;
+  --on-dark:#0B1015;
+  --focus:#8B99FF;
+  --good:#2AA576; --good-soft:#12281F;
+  --warn:#B8801F; --warn-soft:#2A2113;
+  --bad:#E0705C;  --bad-soft:#2E1A17;
+  --st-nouveau:#149FAE; --st-presel:#7C7BF2; --st-entretien:#B8801F;
+  --st-offre:#2AA576;   --st-ecarte:#6C7C8B;
+  --ramp-1:#2B3358; --ramp-2:#3D4A86; --ramp-3:#5462B8; --ramp-4:#6D7BE0; --ramp-5:#94A0F5;
+  --grid:#1D262F;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 18px 40px -16px rgba(0,0,0,.85);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Archivo,"IBM Plex Sans",Helvetica,Arial,sans-serif; margin:0; text-wrap:balance}
+button,input,select,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:4px}
+::selection{background:var(--accent-soft); color:var(--ink)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------------- Barre supérieure ---------------- */
+.topbar{
+  display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  padding:12px 20px; background:var(--surface); border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:30;
+}
+.brand{display:flex; align-items:center; gap:10px; min-width:0}
+.brand-mark{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:13px; letter-spacing:.08em;
+  background:var(--ink); color:var(--on-dark); padding:7px 9px; border-radius:6px;
+}
+.brand-title{font-size:15px; font-weight:600; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.brand-sub{font-size:11.5px; color:var(--ink-3); display:block; font-weight:400; letter-spacing:0}
+.views{display:flex; gap:2px; background:var(--surface-3); padding:3px; border-radius:8px}
+.views button{
+  border:0; background:transparent; color:var(--ink-2); padding:7px 13px; border-radius:6px;
+  font-size:13px; font-weight:500; cursor:pointer;
+}
+.views button[aria-selected="true"]{background:var(--surface); color:var(--ink); font-weight:600; box-shadow:var(--shadow)}
+.topbar-actions{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap}
+
+.btn{
+  border:1px solid var(--line-strong); background:var(--surface); color:var(--ink);
+  padding:8px 13px; border-radius:7px; font-size:13px; font-weight:500; cursor:pointer;
+  display:inline-flex; align-items:center; gap:7px; white-space:nowrap;
+}
+.btn:hover{background:var(--surface-2)}
+.btn-primary{background:var(--ink); border-color:var(--ink); color:var(--on-dark); font-weight:600}
+.btn-primary:hover{opacity:.88; background:var(--ink)}
+.btn-quiet{border-color:transparent; background:transparent; color:var(--ink-2)}
+.btn-quiet:hover{background:var(--surface-3)}
+.btn[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:600}
+.btn-sm{padding:5px 9px; font-size:12px}
+.dot{width:7px; height:7px; border-radius:50%; background:currentColor; flex:none}
+
+/* ---------------- Charpente ---------------- */
+.workspace{display:grid; grid-template-columns:296px minmax(0,1fr); gap:18px; padding:18px 20px 40px; align-items:start}
+.rail{display:flex; flex-direction:column; gap:14px; position:sticky; top:78px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px}
+.panel-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:12px}
+
+/* ---------------- Critères pondérés ---------------- */
+.critere{display:grid; grid-template-columns:1fr auto; gap:2px 8px; padding:9px 0; border-top:1px solid var(--line)}
+.critere:first-of-type{border-top:0}
+.critere label{font-size:12.5px; font-weight:500}
+.critere .val{font-size:12px; color:var(--ink-2)}
+.critere input[type=range]{grid-column:1/-1; width:100%; accent-color:var(--accent); height:18px; margin:2px 0 0}
+.crit-note{font-size:11.5px; color:var(--ink-3); margin:10px 0 0}
+
+/* ---------------- Filtres ---------------- */
+.field{display:flex; flex-direction:column; gap:5px; margin-bottom:12px}
+.field > label{font-size:11.5px; font-weight:600; color:var(--ink-2)}
+.input{
+  border:1px solid var(--line-strong); background:var(--surface-2); border-radius:7px;
+  padding:8px 10px; font-size:13px; width:100%;
+}
+.input:focus{background:var(--surface)}
+.chips{display:flex; flex-wrap:wrap; gap:5px}
+.chip{
+  border:1px solid var(--line); background:var(--surface-2); color:var(--ink-2);
+  border-radius:999px; padding:3.5px 9px; font-size:11.5px; cursor:pointer; white-space:nowrap;
+}
+.chip[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:600}
+.chip-static{cursor:default}
+.chip-match{background:var(--good-soft); border-color:transparent; color:var(--good); font-weight:500}
+.chip-miss{background:transparent; border:1px dashed var(--line-strong); color:var(--ink-3); text-decoration:line-through}
+.switch-row{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 0; font-size:12.5px}
+
+/* ---------------- Bandeau d'indicateurs ---------------- */
+.kpi-strip{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+}
+.kpi{padding:14px 16px; border-left:1px solid var(--line); display:flex; flex-direction:column; gap:3px; min-width:0}
+.kpi:first-child{border-left:0}
+.kpi-val{font-family:Archivo,sans-serif; font-size:30px; font-weight:700; letter-spacing:-.02em; line-height:1.05; font-variant-numeric:tabular-nums}
+.kpi-val small{font-size:15px; font-weight:600; color:var(--ink-3); margin-left:2px}
+.kpi-note{font-size:11.5px; color:var(--ink-3)}
+.kpi-spark{margin-top:6px}
+
+/* ---------------- Graphiques ---------------- */
+.charts{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:14px; margin-top:14px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px 12px}
+.card h3{font-size:13.5px; font-weight:600; letter-spacing:-.01em}
+.card-sub{font-size:11.5px; color:var(--ink-3); margin:2px 0 12px}
+.legend{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; font-size:11.5px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:5px}
+.legend i{width:9px; height:9px; border-radius:2.5px; display:inline-block}
+svg text{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.tip{
+  position:fixed; z-index:90; pointer-events:none; background:var(--ink); color:var(--on-dark);
+  padding:6px 9px; border-radius:6px; font-size:11.5px; box-shadow:var(--shadow-lift); max-width:220px;
+}
+.tip b{font-family:"IBM Plex Mono",monospace}
+
+/* ---------------- Pipeline ---------------- */
+.kanban{display:flex; gap:12px; overflow-x:auto; padding-bottom:10px; scrollbar-width:thin}
+.col{
+  flex:1 0 204px; min-width:204px; background:var(--surface-2); border:1px solid var(--line);
+  border-radius:var(--radius); display:flex; flex-direction:column; max-height:calc(100vh - 190px);
+}
+.col-head{padding:10px 12px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px}
+.col-head .name{font-family:Archivo,sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase}
+.col-head .count{margin-left:auto; font-size:11.5px; color:var(--ink-3)}
+.col-body{padding:10px; display:flex; flex-direction:column; gap:9px; overflow-y:auto; min-height:96px}
+.col.over{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+.col-empty{font-size:11.5px; color:var(--ink-3); text-align:center; padding:18px 6px; border:1px dashed var(--line-strong); border-radius:8px}
+
+.fiche{
+  background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--stage,var(--line-strong));
+  border-radius:4px 4px 8px 8px; padding:10px 11px 11px; cursor:grab; box-shadow:var(--shadow); text-align:left; width:100%;
+  display:flex; flex-direction:column; gap:8px; font:inherit; color:inherit;
+}
+.fiche:hover{box-shadow:var(--shadow-lift); transform:translateY(-1px)}
+.fiche.dragging{opacity:.45; cursor:grabbing}
+.fiche-top{display:flex; align-items:flex-start; gap:9px}
+.fiche .chip{font-size:10.5px; padding:3px 7px}
+.avatar{
+  width:30px; height:30px; border-radius:6px; flex:none; display:grid; place-items:center;
+  background:var(--surface-3); color:var(--ink-2); font-family:Archivo,sans-serif; font-size:11px; font-weight:700;
+}
+.fiche-name{display:block; font-family:Archivo,sans-serif; font-size:13.5px; font-weight:600; letter-spacing:-.01em; line-height:1.25}
+.fiche-role{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  font-size:11.5px; color:var(--ink-3); line-height:1.35}
+.fiche-id{margin-left:auto; font-size:10px; color:var(--ink-3); letter-spacing:.04em}
+.fiche-foot{display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink-3); white-space:nowrap}
+
+/* Jauge de score : rail + remplissage séquentiel + valeur */
+.score{display:flex; align-items:center; gap:8px}
+.score-track{flex:1; height:6px; border-radius:3px; background:var(--surface-3); overflow:hidden; min-width:40px}
+.score-fill{display:block; height:100%; border-radius:3px; background:var(--band,var(--ramp-3))}
+.score-num{font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums; min-width:30px; text-align:right}
+.verdict{font-size:10.5px; font-weight:600; padding:2px 7px; border-radius:4px; white-space:nowrap}
+.v-fort{background:var(--good-soft); color:var(--good)}
+.v-rencontre{background:var(--accent-soft); color:var(--accent-ink)}
+.v-revoir{background:var(--warn-soft); color:var(--warn)}
+.v-non{background:var(--bad-soft); color:var(--bad)}
+.star{color:var(--warn)}
+
+/* ---------------- Liste ---------------- */
+.table-wrap{overflow-x:auto; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius)}
+table{border-collapse:collapse; width:100%; min-width:860px}
+th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:middle}
+thead th{
+  position:sticky; top:0; background:var(--surface-2); z-index:2; font-family:Archivo,sans-serif;
+  font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  border-bottom:1px solid var(--line-strong); white-space:nowrap;
+}
+thead th button{background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; display:inline-flex; gap:4px; align-items:center}
+thead th button[data-active="true"]{color:var(--ink)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.bulk{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 12px;
+  background:var(--accent-soft); border:1px solid var(--accent); border-radius:8px; margin-bottom:12px; font-size:12.5px;
+}
+.list-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+
+/* ---------------- Tiroir fiche candidat ---------------- */
+.scrim{position:fixed; inset:0; background:rgba(9,14,20,.42); z-index:40; backdrop-filter:blur(1.5px)}
+.drawer{
+  position:fixed; top:0; right:0; bottom:0; width:min(460px,100%); background:var(--surface);
+  border-left:1px solid var(--line); z-index:50; display:flex; flex-direction:column; box-shadow:var(--shadow-lift);
+  animation:slide .22s ease-out;
+}
+@keyframes slide{from{transform:translateX(18px); opacity:.4} to{transform:none; opacity:1}}
+.drawer-head{padding:16px 18px 14px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:flex-start}
+.drawer-body{padding:16px 18px 28px; overflow-y:auto; display:flex; flex-direction:column; gap:18px}
+.drawer-foot{padding:10px 18px; border-top:1px solid var(--line); display:flex; gap:8px; align-items:center; background:var(--surface-2)}
+.block h4{font-size:11px; font-family:Archivo,sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin-bottom:9px}
+.breakdown{display:flex; flex-direction:column; gap:9px}
+.bd-row{display:grid; grid-template-columns:1fr 84px 40px; gap:9px; align-items:center; font-size:12.5px}
+.bd-track{height:7px; border-radius:4px; background:var(--surface-3); overflow:hidden}
+.bd-fill{display:block; height:100%; background:var(--accent); border-radius:4px}
+.bd-pct{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-2); text-align:right; font-variant-numeric:tabular-nums}
+.kv{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:12.5px}
+.kv dt{color:var(--ink-3)}
+.kv dd{margin:0; font-weight:500}
+.excerpt{
+  font-size:12.5px; color:var(--ink-2); background:var(--surface-2); border-left:2px solid var(--line-strong);
+  padding:10px 12px; border-radius:0 6px 6px 0; white-space:pre-wrap; max-height:190px; overflow:auto; line-height:1.6;
+}
+.rating{display:flex; gap:2px}
+.rating button{background:none; border:0; cursor:pointer; font-size:17px; line-height:1; color:var(--line-strong); padding:1px}
+.rating button[data-on="true"]{color:var(--warn)}
+textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
+
+/* ---------------- Modales ---------------- */
+.modal{
+  position:fixed; z-index:60; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:min(560px,calc(100vw - 32px)); max-height:min(84vh,720px); overflow:auto;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-lift); padding:18px;
+}
+.modal h2{font-size:17px; margin-bottom:4px}
+.modal-sub{font-size:12.5px; color:var(--ink-3); margin-bottom:14px}
+.dropzone{
+  border:1.5px dashed var(--line-strong); border-radius:10px; padding:22px 16px; text-align:center;
+  background:var(--surface-2); font-size:13px; color:var(--ink-2); cursor:pointer;
+}
+.dropzone.over{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink)}
+.modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap}
+.status{font-size:12px; margin-top:10px; padding:8px 10px; border-radius:6px}
+.status-ok{background:var(--good-soft); color:var(--good)}
+.status-err{background:var(--bad-soft); color:var(--bad)}
+.empty{padding:40px 20px; text-align:center; color:var(--ink-3); font-size:13px}
+
+@media (max-width:1080px){
+  .workspace{grid-template-columns:minmax(0,1fr)}
+  .workspace main{order:-1}
+  .rail{position:static; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); align-items:start}
+  .charts{grid-template-columns:minmax(0,1fr)}
+  .col{max-height:none}
+}
+@media (max-width:640px){
+  .topbar{gap:12px; padding:10px 16px}
+  .workspace{padding:16px 16px 32px}
+  .kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi:nth-child(3){border-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--line)}
+  .brand-title{max-width:46vw}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important}
+  .fiche:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">ICEA</span>
+    <span>
+      <span class="brand-title" id="poste-titre">Chargé·e de projet — Formation des adultes</span>
+      <span class="brand-sub"><span class="mono">AFF-2026-07</span> · Montréal · temps plein · <span id="poste-count">—</span></span>
+    </span>
+  </div>
+
+  <nav class="views" role="tablist" aria-label="Vues">
+    <button role="tab" id="tab-tableau" aria-selected="true" aria-controls="view-tableau" data-vue="tableau">Tableau de bord</button>
+    <button role="tab" id="tab-pipeline" aria-selected="false" aria-controls="view-pipeline" data-vue="pipeline">Pipeline</button>
+    <button role="tab" id="tab-liste" aria-selected="false" aria-controls="view-liste" data-vue="liste">Liste</button>
+  </nav>
+
+  <div class="topbar-actions">
+    <button class="btn" id="btn-anon" aria-pressed="false" title="Masque nom, courriel et téléphone pendant la présélection">Mode anonyme</button>
+    <button class="btn" id="btn-export">Exporter</button>
+    <button class="btn btn-primary" id="btn-import">Importer des CV</button>
+  </div>
+</header>
+
+<div class="workspace">
+  <!-- ------------------------ Rail des critères ------------------------ -->
+  <aside class="rail">
+    <section class="panel" aria-labelledby="h-criteres">
+      <div class="panel-head">
+        <h2 class="eyebrow" id="h-criteres">Grille d'évaluation</h2>
+        <button class="btn btn-quiet btn-sm" id="btn-poids-reset">Réinitialiser</button>
+      </div>
+      <div id="criteres"></div>
+      <p class="crit-note">Les scores se recalculent à chaque ajustement. Total des pondérations : <span class="mono" id="poids-total">100</span>&nbsp;%.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="h-filtres">
+      <div class="panel-head">
+        <h2 class="eyebrow" id="h-filtres">Filtres</h2>
+        <button class="btn btn-quiet btn-sm" id="btn-filtres-reset">Effacer</button>
+      </div>
+      <div class="field">
+        <label for="f-q">Recherche</label>
+        <input class="input" id="f-q" type="search" placeholder="Nom, ville, compétence…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-score">Score minimal : <span class="mono" id="f-score-val">0</span></label>
+        <input id="f-score" type="range" min="0" max="100" step="5" value="0" style="accent-color:var(--accent); width:100%">
+      </div>
+      <div class="field">
+        <label id="lab-comp">Doit posséder</label>
+        <div class="chips" id="f-competences" role="group" aria-labelledby="lab-comp"></div>
+      </div>
+      <div class="switch-row">
+        <span>Favoris seulement</span>
+        <button class="btn btn-sm" id="f-favori" aria-pressed="false">Non</button>
+      </div>
+      <div class="switch-row">
+        <span>Inclure les écartés</span>
+        <button class="btn btn-sm" id="f-ecartes" aria-pressed="false">Non</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2 class="eyebrow">Dossier</h2></div>
+      <p class="crit-note" style="margin-top:0">Les données restent dans ce navigateur. Rien n'est téléversé.</p>
+      <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap">
+        <button class="btn btn-sm" id="btn-demo">Recharger la démo</button>
+        <button class="btn btn-sm" id="btn-vider">Tout effacer</button>
+      </div>
+    </section>
+  </aside>
+
+  <!-- ------------------------ Espace de travail ------------------------ -->
+  <main>
+    <!-- Vue 1 : tableau de bord -->
+    <section id="view-tableau" role="tabpanel" aria-labelledby="tab-tableau">
+      <div class="kpi-strip" id="kpis"></div>
+      <div class="charts">
+        <div class="card">
+          <h3>Entonnoir de sélection</h3>
+          <p class="card-sub">Candidatures par étape, du CV reçu à l'offre.</p>
+          <div id="chart-funnel"></div>
+        </div>
+        <div class="card">
+          <h3>Distribution des scores</h3>
+          <p class="card-sub">Nombre de candidatures par tranche de score.</p>
+          <div id="chart-hist"></div>
+        </div>
+        <div class="card" style="grid-column:1/-1">
+          <h3>Couverture des compétences exigées</h3>
+          <p class="card-sub">Part des candidatures actives qui démontrent chaque compétence de la grille.</p>
+          <div id="chart-skills"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vue 2 : pipeline -->
+    <section id="view-pipeline" role="tabpanel" aria-labelledby="tab-pipeline" hidden>
+      <div class="list-head">
+        <p class="card-sub" style="margin:0">Glissez une fiche d'une colonne à l'autre pour faire avancer la candidature.</p>
+        <span class="eyebrow" id="pipeline-count"></span>
+      </div>
+      <div class="kanban" id="kanban"></div>
+    </section>
+
+    <!-- Vue 3 : liste -->
+    <section id="view-liste" role="tabpanel" aria-labelledby="tab-liste" hidden>
+      <div id="bulk-bar"></div>
+      <div class="list-head">
+        <span class="eyebrow" id="liste-count"></span>
+        <span class="card-sub" style="margin:0">Cliquez sur une ligne pour ouvrir la fiche.</span>
+      </div>
+      <div class="table-wrap">
+        <table id="table">
+          <thead><tr id="thead-row"></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-nom" hidden></aside>
+
+<!-- ------------------------ Modale d'import ------------------------ -->
+<div class="modal" id="modal-import" role="dialog" aria-modal="true" aria-labelledby="import-titre" hidden>
+  <h2 id="import-titre">Importer des CV</h2>
+  <p class="modal-sub">Fichiers PDF, TXT ou Markdown. Chaque CV est analysé puis noté selon la grille d'évaluation.</p>
+  <div class="dropzone" id="dropzone" tabindex="0" role="button">
+    <strong>Déposez vos fichiers ici</strong><br>ou cliquez pour les sélectionner
+  </div>
+  <input type="file" id="file-input" multiple accept=".pdf,.txt,.md,.markdown,.text" class="sr">
+  <div class="field" style="margin-top:14px">
+    <label for="coller">Ou collez le texte d'un CV</label>
+    <textarea class="input" id="coller" rows="6" placeholder="Prénom Nom&#10;courriel@exemple.ca · 514 555-0134 · Montréal&#10;&#10;8 ans en gestion de projet et formation des adultes…"></textarea>
+  </div>
+  <div id="import-status"></div>
+  <div class="modal-actions">
+    <button class="btn" id="import-fermer">Fermer</button>
+    <button class="btn btn-primary" id="import-ajouter">Analyser et ajouter</button>
+  </div>
+</div>
+
+<!-- ------------------------ Modale d'export ------------------------ -->
+<div class="modal" id="modal-export" role="dialog" aria-modal="true" aria-labelledby="export-titre" hidden>
+  <h2 id="export-titre">Exporter la sélection</h2>
+  <p class="modal-sub">Copiez ces lignes dans votre tableur ou votre suivi de dossiers.</p>
+  <div class="field">
+    <label for="export-format">Format</label>
+    <select class="input" id="export-format">
+      <option value="csv">CSV (point-virgule)</option>
+      <option value="json">JSON</option>
+    </select>
+  </div>
+  <textarea class="input mono" id="export-texte" rows="10" readonly style="font-size:11.5px"></textarea>
+  <div id="export-status"></div>
+  <div class="modal-actions">
+    <button class="btn" id="export-fermer">Fermer</button>
+    <button class="btn btn-primary" id="export-copier">Copier</button>
+  </div>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   1. Le poste et sa grille d'évaluation
+   ===================================================================== */
+const POSTE = { titre:"Chargé·e de projet — Formation des adultes", experienceMin:4, experienceCible:6, region:"Grand Montréal" };
+
+const CRITERES = [
+  { id:"competences", label:"Compétences exigées", defaut:45 },
+  { id:"experience",  label:"Années d'expérience", defaut:25 },
+  { id:"formation",   label:"Formation",           defaut:15 },
+  { id:"langues",     label:"Langues",             defaut:10 },
+  { id:"mobilite",    label:"Proximité du poste",  defaut:5  }
+];
+
+const SKILLS = [
+  { id:"projet",    court:"Gestion de projet",   poids:5, kw:["gestion de projet","chargé de projet","chargée de projet","chargee de projet","pmp","planification","échéancier","echeancier","budget"] },
+  { id:"andragogie",court:"Andragogie",          poids:5, kw:["andragogie","formation des adultes","formation continue","alphabétisation","alphabetisation","apprentissage tout au long"] },
+  { id:"financement",court:"Financement public", poids:4, kw:["financement","subvention","reddition de comptes","bailleur","demande de fonds","programme gouvernemental"] },
+  { id:"animation", court:"Animation d'ateliers",poids:4, kw:["animation","atelier","facilitation","formateur","formatrice","animatrice","animateur"] },
+  { id:"redaction", court:"Rédaction",           poids:3, kw:["rédaction","redaction","rédiger","rediger","mémoire","memoire","rapport annuel","avis public"] },
+  { id:"partenariats",court:"Partenariats",      poids:3, kw:["partenariat","concertation","communautaire","osbl","obnl","table de concertation","réseau","reseau"] },
+  { id:"evaluation",court:"Évaluation de programmes",poids:3, kw:["évaluation","evaluation","indicateurs","mesure d'impact","bilan","reddition"] },
+  { id:"lms",       court:"Moodle / LMS",        poids:2, kw:["moodle","lms","formation en ligne","e-learning","plateforme d'apprentissage","visioconférence","visioconference"] },
+  { id:"donnees",   court:"Excel / données",     poids:2, kw:["excel","tableur","power bi","base de données","statistiques","sondage"] },
+  { id:"anglais",   court:"Anglais fonctionnel", poids:2, kw:["anglais","bilingue","english","fluent"] }
+];
+const POIDS_TOTAL_SKILLS = SKILLS.reduce((s,k)=>s+k.poids,0);
+
+const FORMATIONS = {
+  doctorat:{ label:"Doctorat", valeur:1 }, maitrise:{ label:"Maîtrise", valeur:.95 },
+  bac:{ label:"Baccalauréat", valeur:.75 }, certificat:{ label:"Certificat", valeur:.5 },
+  dec:{ label:"DEC", valeur:.4 }, aucune:{ label:"Non précisée", valeur:.25 }
+};
+
+const ETAPES = [
+  { id:"nouveau",   label:"Nouveaux CV",   couleur:"var(--st-nouveau)" },
+  { id:"presel",    label:"Présélection",  couleur:"var(--st-presel)" },
+  { id:"entretien", label:"Entretien",     couleur:"var(--st-entretien)" },
+  { id:"offre",     label:"Offre",         couleur:"var(--st-offre)" },
+  { id:"ecarte",    label:"Écartés",       couleur:"var(--st-ecarte)" }
+];
+const ETAPE = Object.fromEntries(ETAPES.map(e=>[e.id,e]));
+
+const PROCHES = ["montréal","montreal","laval","longueuil","brossard","saint-lambert","repentigny","terrebonne","saint-jérôme","saint-jerome","boucherville"];
+const AU_QUEBEC = ["québec","quebec","gatineau","sherbrooke","trois-rivières","trois-rivieres","saguenay","drummondville","rimouski","joliette","granby","lévis","levis"];
+
+/* =====================================================================
+   2. Jeu de démonstration — 16 candidatures fictives
+   ===================================================================== */
+const SEED = [
+  { prenom:"Amélie", nom:"Bourgeois", titre:"Conseillère en formation continue", ville:"Montréal", courriel:"a.bourgeois@exemple.ca", tel:"514 555-0143",
+    annees:8, formation:"maitrise", langues:["fr","en"], source:"Site de l'ICEA", jours:3, etape:"entretien", favori:true, note:4,
+    competences:["projet","andragogie","financement","animation","redaction","partenariats","evaluation"],
+    resume:"Maîtrise en andragogie (UdeM). 8 ans à piloter des programmes de formation continue pour un regroupement d'OSBL.\nMonte et suit les demandes de subvention au MEQ et à Emploi-Québec, incluant la reddition de comptes.\nAnime des ateliers auprès de groupes d'adultes en alphabétisation; conçoit les grilles d'évaluation de programmes." },
+  { prenom:"Karim", nom:"Benali", titre:"Coordonnateur de projets communautaires", ville:"Laval", courriel:"k.benali@exemple.ca", tel:"450 555-0198",
+    annees:6, formation:"bac", langues:["fr","en"], source:"LinkedIn", jours:5, etape:"presel", favori:false, note:3,
+    competences:["projet","animation","partenariats","financement","donnees"],
+    resume:"Bac en travail social. 6 ans en coordination de projets dans un organisme communautaire de Laval.\nGestion d'un budget annuel de 400 k$ et de trois tables de concertation régionales.\nAnimation d'ateliers d'employabilité; suivi des indicateurs dans Excel." },
+  { prenom:"Marie-Josée", nom:"Tremblay", titre:"Directrice de la formation", ville:"Québec", courriel:"mj.tremblay@exemple.ca", tel:"418 555-0176",
+    annees:12, formation:"maitrise", langues:["fr"], source:"Référence interne", jours:9, etape:"entretien", favori:true, note:5,
+    competences:["projet","andragogie","financement","animation","redaction","partenariats","evaluation","lms"],
+    resume:"Maîtrise en sciences de l'éducation. 12 ans en formation des adultes, dont 5 à la direction d'un service de formation continue.\nA déployé Moodle pour 1 200 apprenants adultes et rédigé le mémoire de l'organisme sur l'apprentissage tout au long de la vie.\nExpérience approfondie du financement public et de la reddition de comptes." },
+  { prenom:"Thi Lan", nom:"Nguyen", titre:"Chargée de projet numérique", ville:"Longueuil", courriel:"tl.nguyen@exemple.ca", tel:"450 555-0121",
+    annees:4, formation:"bac", langues:["fr","en"], source:"Indeed", jours:2, etape:"nouveau", favori:false, note:0,
+    competences:["projet","lms","donnees","redaction","animation"],
+    resume:"Bac en communication. 4 ans comme chargée de projet numérique; déploiement d'une plateforme d'apprentissage en ligne.\nProduction de tableaux de bord Power BI et de rapports d'étape.\nAnimation de formations en visioconférence auprès d'équipes bilingues." },
+  { prenom:"Jean-Philippe", nom:"Côté", titre:"Agent de développement", ville:"Gatineau", courriel:"jp.cote@exemple.ca", tel:"819 555-0155",
+    annees:3, formation:"certificat", langues:["fr","en"], source:"Emploi-Québec", jours:11, etape:"nouveau", favori:false, note:0,
+    competences:["partenariats","animation","redaction"],
+    resume:"Certificat en gestion des OSBL. 3 ans comme agent de développement en Outaouais.\nAnimation d'ateliers ponctuels et rédaction de bulletins destinés aux membres.\nPeu d'expérience directe en gestion de projet de formation." },
+  { prenom:"Fatou", nom:"Diallo", titre:"Conseillère pédagogique", ville:"Montréal", courriel:"f.diallo@exemple.ca", tel:"514 555-0187",
+    annees:9, formation:"maitrise", langues:["fr","en"], source:"LinkedIn", jours:4, etape:"presel", favori:true, note:4,
+    competences:["andragogie","animation","evaluation","lms","redaction","projet"],
+    resume:"Maîtrise en andragogie. 9 ans comme conseillère pédagogique auprès de publics adultes peu scolarisés.\nConçoit les parcours, forme les formatrices et mesure l'impact des programmes.\nUtilise Moodle au quotidien; rédige les rapports d'évaluation remis aux bailleurs." },
+  { prenom:"Simon", nom:"Lachapelle", titre:"Adjoint administratif", ville:"Sherbrooke", courriel:"s.lachapelle@exemple.ca", tel:"819 555-0134",
+    annees:2, formation:"dec", langues:["fr"], source:"Indeed", jours:14, etape:"ecarte", favori:false, note:1,
+    competences:["donnees","redaction"],
+    resume:"DEC en bureautique. 2 ans en soutien administratif dans un centre de services scolaire.\nTenue de dossiers, saisie dans Excel, préparation de convocations." },
+  { prenom:"Léa", nom:"Rousseau-Fortin", titre:"Chargée de projet en éducation populaire", ville:"Montréal", courriel:"l.rousseaufortin@exemple.ca", tel:"514 555-0109",
+    annees:5, formation:"bac", langues:["fr","en"], source:"Site de l'ICEA", jours:1, etape:"nouveau", favori:false, note:0,
+    competences:["projet","andragogie","animation","partenariats","financement"],
+    resume:"Bac en éducation. 5 ans en éducation populaire auprès d'un réseau communautaire montréalais.\nGestion de projet de A à Z : échéancier, budget, demandes de subvention, bilan de fin de programme.\nAnimation hebdomadaire d'ateliers auprès d'adultes en francisation." },
+  { prenom:"Diego", nom:"Ramírez", titre:"Responsable de programmes", ville:"Montréal", courriel:"d.ramirez@exemple.ca", tel:"514 555-0162",
+    annees:7, formation:"maitrise", langues:["fr","en"], source:"LinkedIn", jours:6, etape:"presel", favori:false, note:3,
+    competences:["projet","financement","evaluation","partenariats","donnees","anglais"],
+    resume:"Maîtrise en administration publique. 7 ans en gestion de programmes d'insertion socioprofessionnelle.\nResponsable de trois ententes de financement et de la reddition de comptes trimestrielle.\nTravaille en français et en anglais avec des partenaires pancanadiens." },
+  { prenom:"Catherine", nom:"Ouellet", titre:"Formatrice en milieu de travail", ville:"Trois-Rivières", courriel:"c.ouellet@exemple.ca", tel:"819 555-0117",
+    annees:11, formation:"bac", langues:["fr"], source:"Foire de l'emploi", jours:8, etape:"nouveau", favori:false, note:0,
+    competences:["andragogie","animation","evaluation","redaction"],
+    resume:"Bac en enseignement. 11 ans comme formatrice en entreprise auprès d'apprenants adultes.\nConception de contenus, animation d'ateliers, évaluation des acquis en fin de parcours.\nRecherche un poste avec plus de responsabilités de coordination." },
+  { prenom:"Youssef", nom:"El Amrani", titre:"Analyste junior", ville:"Laval", courriel:"y.elamrani@exemple.ca", tel:"450 555-0173",
+    annees:1, formation:"bac", langues:["fr","en"], source:"Indeed", jours:7, etape:"nouveau", favori:false, note:0,
+    competences:["donnees","redaction","anglais"],
+    resume:"Bac en économie, diplômé l'an dernier. 1 an comme analyste junior.\nProduction de statistiques et de sondages; rapports en français et en anglais.\nAucune expérience en formation des adultes à ce jour." },
+  { prenom:"Sophie", nom:"Girard", titre:"Chercheuse en éducation des adultes", ville:"Montréal", courriel:"s.girard@exemple.ca", tel:"514 555-0128",
+    annees:6, formation:"doctorat", langues:["fr","en"], source:"Référence interne", jours:10, etape:"presel", favori:true, note:4,
+    competences:["andragogie","evaluation","redaction","donnees","anglais","financement"],
+    resume:"Doctorat en éducation. 6 ans de recherche appliquée sur l'apprentissage tout au long de la vie.\nRédaction d'avis publics et de mémoires; obtention de deux subventions de recherche.\nMoins d'expérience opérationnelle en gestion de projet terrain." },
+  { prenom:"Marc-Antoine", nom:"Dubé", titre:"Coordonnateur logistique", ville:"Saint-Jérôme", courriel:"ma.dube@exemple.ca", tel:"450 555-0190",
+    annees:15, formation:"dec", langues:["fr"], source:"Indeed", jours:13, etape:"ecarte", favori:false, note:1,
+    competences:["projet","donnees"],
+    resume:"DEC en logistique. 15 ans en coordination d'opérations et d'échéanciers dans le secteur privé.\nGestion de budget et de fournisseurs; aucun lien avec la formation ou le milieu communautaire." },
+  { prenom:"Priya", nom:"Raman", titre:"Conseillère en développement des compétences", ville:"Montréal", courriel:"p.raman@exemple.ca", tel:"514 555-0158",
+    annees:4, formation:"maitrise", langues:["fr","en"], source:"LinkedIn", jours:2, etape:"nouveau", favori:false, note:0,
+    competences:["andragogie","animation","lms","evaluation","anglais","projet"],
+    resume:"Maîtrise en gestion de la formation. 4 ans en développement des compétences dans un cégep.\nConception de parcours hybrides sur Moodle et animation d'ateliers pour adultes en reconversion.\nÉvaluation des apprentissages et suivi des indicateurs de réussite." },
+  { prenom:"Olivier", nom:"Sanschagrin", titre:"Agent de communication", ville:"Québec", courriel:"o.sanschagrin@exemple.ca", tel:"418 555-0146",
+    annees:3, formation:"bac", langues:["fr"], source:"Site de l'ICEA", jours:12, etape:"nouveau", favori:false, note:0,
+    competences:["redaction","animation","partenariats"],
+    resume:"Bac en communication publique. 3 ans en communication pour une fédération d'organismes.\nRédaction de contenus, infolettres et rapport annuel; soutien à l'animation d'événements de concertation." },
+  { prenom:"Nadia", nom:"Kowalski", titre:"Gestionnaire de programmes de formation", ville:"Montréal", courriel:"n.kowalski@exemple.ca", tel:"514 555-0165",
+    annees:10, formation:"maitrise", langues:["fr","en"], source:"Référence interne", jours:15, etape:"offre", favori:true, note:5,
+    competences:["projet","andragogie","financement","animation","redaction","partenariats","evaluation","lms","anglais"],
+    resume:"Maîtrise en éducation des adultes. 10 ans en gestion de programmes de formation, dont 4 en direction d'équipe.\nPortefeuille de 1,2 M$ en financement public; reddition de comptes et évaluation d'impact annuelles.\nA implanté un LMS et formé 30 formateurs; anime régulièrement des ateliers et des tables de concertation." }
+];
+
+/* =====================================================================
+   3. État et persistance (navigateur uniquement)
+   ===================================================================== */
+const CLE = "icea-ats-v1";
+const poidsDefaut = () => Object.fromEntries(CRITERES.map(c=>[c.id,c.defaut]));
+let state = null;
+
+function jeuDemo(){
+  return SEED.map((c,i)=>({
+    id:"c"+(i+1), ref:"C-"+String(i+1).padStart(3,"0"),
+    prenom:c.prenom, nom:c.nom, titre:c.titre, ville:c.ville, courriel:c.courriel, tel:c.tel,
+    annees:c.annees, formation:c.formation, langues:c.langues.slice(), competences:c.competences.slice(),
+    source:c.source, recu:Date.now()-c.jours*864e5, etape:c.etape, favori:!!c.favori, note:c.note||0,
+    commentaire:"", resume:c.resume, demo:true
+  }));
+}
+function etatNeuf(){
+  return { candidats:jeuDemo(), poids:poidsDefaut(), vue:"tableau", anonyme:false,
+           filtres:{ q:"", scoreMin:0, competences:[], favori:false, ecartes:false },
+           tri:{ champ:"score", sens:-1 }, selection:[], ouvert:null, seq:SEED.length };
+}
+function charger(){
+  try{
+    const brut = localStorage.getItem(CLE);
+    if(!brut) return etatNeuf();
+    const s = JSON.parse(brut);
+    if(!s || !Array.isArray(s.candidats)) return etatNeuf();
+    const base = etatNeuf();
+    return Object.assign(base, s, { poids:Object.assign(base.poids, s.poids||{}),
+      filtres:Object.assign(base.filtres, s.filtres||{}), selection:[], ouvert:null });
+  }catch(e){ return etatNeuf(); }
+}
+function sauver(){
+  try{ localStorage.setItem(CLE, JSON.stringify(Object.assign({}, state, {selection:[], ouvert:null}))); }catch(e){}
+}
+
+/* =====================================================================
+   4. Notation
+   ===================================================================== */
+function mobilite(ville){
+  const v = (ville||"").toLowerCase();
+  if(PROCHES.some(p=>v.includes(p))) return 1;
+  if(AU_QUEBEC.some(p=>v.includes(p))) return .55;
+  return .3;
+}
+function scorer(c){
+  const p = state.poids;
+  const obtenues = SKILLS.filter(k=>c.competences.includes(k.id));
+  const parts = {
+    competences: obtenues.reduce((s,k)=>s+k.poids,0)/POIDS_TOTAL_SKILLS,
+    experience:  Math.min(1, c.annees/POSTE.experienceCible),
+    formation:   (FORMATIONS[c.formation]||FORMATIONS.aucune).valeur,
+    langues:     (c.langues.includes("fr")?.6:.2) + (c.langues.includes("en")?.4:0),
+    mobilite:    mobilite(c.ville)
+  };
+  const sommeP = CRITERES.reduce((s,cr)=>s+(p[cr.id]||0),0) || 1;
+  const total = CRITERES.reduce((s,cr)=>s+parts[cr.id]*(p[cr.id]||0),0)/sommeP*100;
+  return { total:Math.round(total), parts,
+           obtenues:obtenues.map(k=>k.id),
+           manquantes:SKILLS.filter(k=>!c.competences.includes(k.id)).map(k=>k.id) };
+}
+function verdict(n){
+  if(n>=80) return { cls:"v-fort",      txt:"Fortement recommandé", court:"Recommandé" };
+  if(n>=65) return { cls:"v-rencontre", txt:"À rencontrer",         court:"À rencontrer" };
+  if(n>=50) return { cls:"v-revoir",    txt:"À revoir",             court:"À revoir" };
+  return { cls:"v-non", txt:"Ne correspond pas", court:"Hors profil" };
+}
+const RAMPE = ["var(--ramp-1)","var(--ramp-2)","var(--ramp-3)","var(--ramp-4)","var(--ramp-5)"];
+const bande = n => RAMPE[Math.min(4, Math.floor(n/20))];
+
+/* =====================================================================
+   5. Utilitaires
+   ===================================================================== */
+const $  = s => document.querySelector(s);
+const el = id => document.getElementById(id);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const skill = id => SKILLS.find(k=>k.id===id);
+const nomDe = c => state.anonyme ? "Candidat·e "+c.ref : c.prenom+" "+c.nom;
+const initiales = c => state.anonyme ? c.ref.slice(2) : (c.prenom[0]||"")+(c.nom[0]||"");
+const masque = v => state.anonyme ? "— masqué en mode anonyme —" : v || "—";
+function depuis(ts){
+  const j = Math.max(0, Math.round((Date.now()-ts)/864e5));
+  return j===0 ? "aujourd'hui" : j===1 ? "hier" : "il y a "+j+" j";
+}
+function depuisCourt(ts){
+  const j = Math.max(0, Math.round((Date.now()-ts)/864e5));
+  return j===0 ? "auj." : j+" j";
+}
+const dateCourte = ts => new Date(ts).toLocaleDateString("fr-CA",{day:"2-digit",month:"short",year:"numeric"});
+function mediane(xs){
+  if(!xs.length) return 0;
+  const t=[...xs].sort((a,b)=>a-b), m=t.length>>1;
+  return t.length%2 ? t[m] : Math.round((t[m-1]+t[m])/2);
+}
+
+/* Vue courante des candidatures : score calculé + filtres appliqués. */
+function notes(){ return state.candidats.map(c=>Object.assign({}, c, {s:scorer(c)})); }
+function filtrer(liste, garderEcartes){
+  const f = state.filtres, q = f.q.trim().toLowerCase();
+  return liste.filter(c=>{
+    if(!garderEcartes && !f.ecartes && c.etape==="ecarte") return false;
+    if(f.favori && !c.favori) return false;
+    if(c.s.total < f.scoreMin) return false;
+    if(f.competences.length && !f.competences.every(k=>c.competences.includes(k))) return false;
+    if(q){
+      const foin = [state.anonyme?c.ref:c.prenom+" "+c.nom, c.ville, c.titre, c.source,
+                    c.competences.map(k=>skill(k).court).join(" "), state.anonyme?"":c.resume].join(" ").toLowerCase();
+      if(!foin.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+/* =====================================================================
+   6. Graphiques (SVG dessiné à la main, une seule échelle par graphique)
+   ===================================================================== */
+function svgOpen(w,h,fixe){
+  const style = fixe ? "display:block"
+    : `display:block;width:100%;max-width:${w}px;height:auto;overflow:visible`;
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMinYMin meet" style="${style}" role="img">`;
+}
+const T = (x,y,txt,opt={}) => `<text x="${x}" y="${y}" style="fill:${opt.fill||"var(--ink-3)"};font-size:${opt.size||10.5}px;font-weight:${opt.w||400}" text-anchor="${opt.anchor||"start"}">${esc(txt)}</text>`;
+
+function chartFunnel(){
+  const lignes = ETAPES.map(e=>({ e, n:state.candidats.filter(c=>c.etape===e.id).length }));
+  const total = state.candidats.length || 1;
+  const max = Math.max(1, ...lignes.map(x=>x.n));
+  const LX=118, BX=126, BW=352, RH=34, TOP=10, H=TOP+lignes.length*RH+26, W=560;
+  let s = svgOpen(W,H);
+  for(let i=0;i<=2;i++){
+    const x = BX + BW*i/2;
+    s += `<line x1="${x}" y1="${TOP-2}" x2="${x}" y2="${TOP+lignes.length*RH}" style="stroke:var(--grid);stroke-width:1"/>`;
+    s += T(x, H-8, String(Math.round(max*i/2)), {anchor:"middle"});
+  }
+  lignes.forEach((l,i)=>{
+    const y = TOP + i*RH, w = Math.max(l.n?3:0, BW*l.n/max), part = Math.round(l.n/total*100);
+    s += T(LX, y+18, l.e.label, {anchor:"end", fill:"var(--ink-2)", size:11.5, w:500});
+    s += `<rect x="${BX}" y="${y+6}" width="${BW}" height="18" rx="4" style="fill:var(--grid)"/>`;
+    if(l.n) s += `<rect x="${BX}" y="${y+6}" width="${w}" height="18" rx="4" style="fill:${l.e.couleur}" data-tip="${esc(l.e.label)} · ${l.n} candidature${l.n>1?"s":""} · ${part} % du bassin"/>`;
+    s += T(BX+w+8, y+19, l.n+" · "+part+" %", {fill:"var(--ink-2)", size:11, w:600});
+  });
+  s += T(0, H-8, "candidatures", {size:10});
+  return s+"</svg>";
+}
+
+function chartHist(actives){
+  const bins = Array.from({length:10},(_,i)=>({de:i*10, n:0}));
+  actives.forEach(c=>bins[Math.min(9,Math.floor(c.s.total/10))].n++);
+  const max = Math.max(1, ...bins.map(b=>b.n));
+  const W=560, H=200, L=30, R=548, TOP=14, BASE=156;
+  const pas = (R-L)/10;
+  let s = svgOpen(W,H);
+  const ticks = max<=4 ? Array.from({length:max+1},(_,i)=>i) : [0, Math.round(max/2), max];
+  ticks.forEach(t=>{
+    const y = BASE - (BASE-TOP)*t/max;
+    s += `<line x1="${L}" y1="${y}" x2="${R}" y2="${y}" style="stroke:var(--grid);stroke-width:1"/>`;
+    s += T(L-6, y+3.5, String(t), {anchor:"end", size:10});
+  });
+  bins.forEach((b,i)=>{
+    const x = L + i*pas + 2, w = pas-4, h = b.n ? Math.max(2,(BASE-TOP)*b.n/max) : 0;
+    if(h) s += `<rect x="${x}" y="${BASE-h}" width="${w}" height="${h}" rx="3" style="fill:${bande(b.de)}" data-tip="Score ${b.de}–${b.de+9} · ${b.n} candidature${b.n>1?"s":""}"/>`;
+    if(b.n) s += T(x+w/2, BASE-h-5, String(b.n), {anchor:"middle", size:10.5, fill:"var(--ink-2)", w:600});
+    if(i%2===0) s += T(x+w/2, BASE+15, String(b.de), {anchor:"middle", size:10});
+  });
+  s += `<line x1="${L}" y1="${BASE}" x2="${R}" y2="${BASE}" style="stroke:var(--line-strong);stroke-width:1"/>`;
+  const med = mediane(actives.map(c=>c.s.total));
+  if(actives.length){
+    const x = L + (R-L)*Math.min(100,med)/100;
+    s += `<line x1="${x}" y1="${TOP-8}" x2="${x}" y2="${BASE}" style="stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:3 3"/>`;
+    s += T(Math.min(x+5, R-88), TOP-10, "médiane "+med, {fill:"var(--ink-2)", size:10.5, w:600});
+  }
+  s += T(L, H-4, "score sur 100", {size:10});
+  return s+"</svg>";
+}
+
+function chartSkills(actives){
+  const n = actives.length || 1;
+  const lignes = SKILLS.map(k=>({ k, n:actives.filter(c=>c.competences.includes(k.id)).length }))
+                       .sort((a,b)=>b.n-a.n || b.k.poids-a.k.poids);
+  const LX=230, BX=238, BW=620, RH=26, TOP=6, W=900, H=TOP+lignes.length*RH+18;
+  let s = svgOpen(W,H);
+  [0,.5,1].forEach(f=>{
+    const x = BX+BW*f;
+    s += `<line x1="${x}" y1="${TOP}" x2="${x}" y2="${TOP+lignes.length*RH-6}" style="stroke:var(--grid);stroke-width:1"/>`;
+    s += T(x, H-4, Math.round(f*100)+" %", {anchor:"middle", size:10});
+  });
+  lignes.forEach((l,i)=>{
+    const y = TOP+i*RH, pct = Math.round(l.n/n*100), w = Math.max(l.n?3:0, BW*l.n/n);
+    s += T(LX-24, y+14, l.k.court, {anchor:"end", fill:"var(--ink-2)", size:11.5});
+    s += T(LX, y+14, "×"+l.k.poids, {anchor:"end", size:10.5, fill:"var(--ink-3)"});
+    s += `<rect x="${BX}" y="${y+4}" width="${BW}" height="12" rx="3" style="fill:var(--grid)"/>`;
+    if(l.n) s += `<rect x="${BX}" y="${y+4}" width="${w}" height="12" rx="3" style="fill:var(--ramp-4)" data-tip="${esc(l.k.court)} · ${l.n} candidature${l.n>1?"s":""} sur ${n} · poids ×${l.k.poids}"/>`;
+    s += T(BX+w+7, y+14, pct+" %", {fill:"var(--ink-2)", size:10.5, w:600});
+  });
+  return s+"</svg>";
+}
+
+function sparkline(vals){
+  const W=118, H=30, max = Math.max(1,...vals);
+  const pt = i => [ (W-2)*i/Math.max(1,vals.length-1)+1, H-3 - (H-9)*vals[i]/max ];
+  const pts = vals.map((_,i)=>pt(i));
+  const d = pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+  const aire = d+` L ${W-1} ${H-3} L 1 ${H-3} Z`;
+  const der = pts[pts.length-1];
+  return svgOpen(W,H,true)
+    + `<path d="${aire}" style="fill:var(--accent);opacity:.14"/>`
+    + `<path d="${d}" style="fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round"/>`
+    + `<circle cx="${der[0].toFixed(1)}" cy="${der[1].toFixed(1)}" r="3" style="fill:var(--accent);stroke:var(--surface);stroke-width:2"/></svg>`;
+}
+
+/* =====================================================================
+   7. Vue « tableau de bord »
+   ===================================================================== */
+function renderTableau(){
+  const tous = notes();
+  const actives = tous.filter(c=>c.etape!=="ecarte");
+  const med = mediane(actives.map(c=>c.s.total));
+  const qualifies = actives.filter(c=>c.s.total>=70).length;
+  const avances = tous.filter(c=>["entretien","offre"].includes(c.etape)).length;
+  const offres = tous.filter(c=>c.etape==="offre").length;
+
+  const semaines = [0,0,0,0,0,0];
+  tous.forEach(c=>{
+    const idx = 5 - Math.floor((Date.now()-c.recu)/(7*864e5));
+    if(idx>=0 && idx<6) semaines[idx]++;
+  });
+
+  el("kpis").innerHTML = `
+    <div class="kpi">
+      <span class="eyebrow">CV reçus</span>
+      <span class="kpi-val">${tous.length}</span>
+      <span class="kpi-note">${tous.filter(c=>c.etape==="ecarte").length} écarté(s) à ce jour</span>
+      <div class="kpi-spark">${sparkline(semaines)}</div>
+    </div>
+    <div class="kpi">
+      <span class="eyebrow">Score médian</span>
+      <span class="kpi-val">${med}<small>/100</small></span>
+      <span class="kpi-note">Bassin actif de ${actives.length} candidature(s)</span>
+    </div>
+    <div class="kpi">
+      <span class="eyebrow">Qualifiés (≥ 70)</span>
+      <span class="kpi-val">${qualifies}</span>
+      <span class="kpi-note">${actives.length?Math.round(qualifies/actives.length*100):0} % du bassin actif</span>
+    </div>
+    <div class="kpi">
+      <span class="eyebrow">En entretien ou plus</span>
+      <span class="kpi-val">${avances}</span>
+      <span class="kpi-note">${offres} offre(s) en cours</span>
+    </div>`;
+
+  el("chart-funnel").innerHTML = chartFunnel();
+  el("chart-hist").innerHTML   = chartHist(actives);
+  el("chart-skills").innerHTML = chartSkills(actives);
+}
+
+/* =====================================================================
+   8. Vue « pipeline » — colonnes glisser-déposer
+   ===================================================================== */
+function ficheHTML(c){
+  const v = verdict(c.s.total);
+  const reste = Math.max(0, c.s.obtenues.length-2);
+  const top = c.s.obtenues.slice(0,2).map(id=>`<span class="chip chip-static chip-match">${esc(skill(id).court)}</span>`).join("")
+    + (reste?`<span class="chip chip-static">+${reste}</span>`:"");
+  return `<button class="fiche" draggable="true" data-id="${c.id}" style="--stage:${ETAPE[c.etape].couleur}">
+    <span class="fiche-top">
+      <span class="avatar">${esc(initiales(c))}</span>
+      <span style="min-width:0">
+        <span class="fiche-name">${esc(nomDe(c))}${c.favori?' <span class="star" title="Favori">★</span>':""}</span>
+        <span class="fiche-role">${esc(state.anonyme ? c.titre : c.titre+" · "+c.ville)}</span>
+      </span>
+      <span class="fiche-id mono">${esc(c.ref)}</span>
+    </span>
+    <span class="score">
+      <span class="score-track"><span class="score-fill" style="width:${c.s.total}%;--band:${bande(c.s.total)}"></span></span>
+      <span class="score-num">${c.s.total}</span>
+    </span>
+    <span class="chips">${top}</span>
+    <span class="fiche-foot"><span class="verdict ${v.cls}">${v.court}</span><span style="margin-left:auto">${esc(depuisCourt(c.recu))}</span></span>
+  </button>`;
+}
+function renderPipeline(){
+  const liste = filtrer(notes(), true);
+  const parEtape = Object.fromEntries(ETAPES.map(e=>[e.id,[]]));
+  liste.forEach(c=>parEtape[c.etape] && parEtape[c.etape].push(c));
+  Object.values(parEtape).forEach(a=>a.sort((x,y)=>y.s.total-x.s.total));
+  el("kanban").innerHTML = ETAPES.map(e=>`
+    <section class="col" data-etape="${e.id}" aria-label="${esc(e.label)}">
+      <header class="col-head">
+        <span class="dot" style="color:${e.couleur}"></span>
+        <span class="name">${esc(e.label)}</span>
+        <span class="count mono">${parEtape[e.id].length}</span>
+      </header>
+      <div class="col-body">
+        ${parEtape[e.id].map(ficheHTML).join("") || '<p class="col-empty">Déposez une fiche ici</p>'}
+      </div>
+    </section>`).join("");
+  el("pipeline-count").textContent = liste.length+" candidature(s) affichée(s)";
+}
+
+/* =====================================================================
+   9. Vue « liste »
+   ===================================================================== */
+const COLONNES = [
+  { id:"sel",   label:"",             tri:null },
+  { id:"nom",   label:"Candidature",  tri:"nom" },
+  { id:"score", label:"Score",        tri:"score" },
+  { id:"comp",  label:"Compétences",  tri:"comp" },
+  { id:"exp",   label:"Exp.",         tri:"annees" },
+  { id:"form",  label:"Formation",    tri:"formation" },
+  { id:"ville", label:"Ville",        tri:"ville" },
+  { id:"etape", label:"Étape",        tri:"etape" },
+  { id:"recu",  label:"Reçu",         tri:"recu" }
+];
+function trier(liste){
+  const { champ, sens } = state.tri;
+  const cle = c => ({
+    score:c.s.total, nom:(state.anonyme?c.ref:c.nom).toLowerCase(), comp:c.s.obtenues.length,
+    annees:c.annees, formation:(FORMATIONS[c.formation]||FORMATIONS.aucune).valeur,
+    ville:c.ville.toLowerCase(), etape:ETAPES.findIndex(e=>e.id===c.etape), recu:c.recu
+  })[champ];
+  return [...liste].sort((a,b)=>{ const x=cle(a), y=cle(b); return x<y?-sens : x>y?sens : 0; });
+}
+function renderListe(){
+  const liste = trier(filtrer(notes()));
+  el("thead-row").innerHTML = COLONNES.map(col=>{
+    if(col.id==="sel") return `<th style="width:34px"><input type="checkbox" id="sel-tout" aria-label="Tout sélectionner"></th>`;
+    const actif = state.tri.champ===col.tri;
+    const fleche = actif ? (state.tri.sens<0?"↓":"↑") : "";
+    return `<th><button data-tri="${col.tri}" data-active="${actif}">${esc(col.label)} ${fleche}</button></th>`;
+  }).join("");
+
+  el("tbody").innerHTML = liste.length ? liste.map(c=>{
+    const v = verdict(c.s.total);
+    return `<tr data-id="${c.id}">
+      <td><input type="checkbox" class="sel-un" data-id="${c.id}" ${state.selection.includes(c.id)?"checked":""} aria-label="Sélectionner ${esc(nomDe(c))}"></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span class="avatar">${esc(initiales(c))}</span>
+          <span>
+            <strong style="font-weight:600">${esc(nomDe(c))}</strong>${c.favori?' <span class="star">★</span>':""}
+            <span style="display:block;font-size:11.5px;color:var(--ink-3)">${esc(c.titre)}</span>
+          </span>
+        </div>
+      </td>
+      <td style="min-width:150px">
+        <div class="score">
+          <span class="score-track"><span class="score-fill" style="width:${c.s.total}%;--band:${bande(c.s.total)}"></span></span>
+          <span class="score-num">${c.s.total}</span>
+        </div>
+        <span class="verdict ${v.cls}" style="display:inline-block;margin-top:4px">${v.txt}</span>
+      </td>
+      <td class="num">${c.s.obtenues.length}<span style="color:var(--ink-3)">/${SKILLS.length}</span></td>
+      <td class="num">${c.annees} an${c.annees>1?"s":""}</td>
+      <td>${esc((FORMATIONS[c.formation]||FORMATIONS.aucune).label)}</td>
+      <td>${esc(c.ville)}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="color:${ETAPE[c.etape].couleur}"></span>${esc(ETAPE[c.etape].label)}</span></td>
+      <td class="num" style="color:var(--ink-3)">${esc(depuis(c.recu))}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="9"><p class="empty">Aucune candidature ne correspond aux filtres.</p></td></tr>`;
+
+  el("liste-count").textContent = liste.length+" candidature(s) · triées par "+(COLONNES.find(c=>c.tri===state.tri.champ)||{label:"score"}).label.toLowerCase();
+  const tout = el("sel-tout");
+  if(tout) tout.checked = liste.length>0 && liste.every(c=>state.selection.includes(c.id));
+
+  el("bulk-bar").innerHTML = state.selection.length ? `
+    <div class="bulk">
+      <strong>${state.selection.length} sélectionnée(s)</strong>
+      <label for="bulk-etape" style="color:var(--ink-2)">Déplacer vers</label>
+      <select class="input" id="bulk-etape" style="width:auto">
+        <option value="">Choisir une étape…</option>
+        ${ETAPES.map(e=>`<option value="${e.id}">${esc(e.label)}</option>`).join("")}
+      </select>
+      <button class="btn btn-sm" id="bulk-export">Exporter la sélection</button>
+      <button class="btn btn-sm btn-quiet" id="bulk-vider" style="margin-left:auto">Désélectionner</button>
+    </div>` : "";
+}
+
+/* =====================================================================
+   10. Fiche candidat (tiroir)
+   ===================================================================== */
+function anneau(n){
+  const r=34, c=2*Math.PI*r, off=c*(1-n/100);
+  return `<svg viewBox="0 0 84 84" width="84" height="84" role="img" aria-label="Score ${n} sur 100">
+    <circle cx="42" cy="42" r="${r}" style="fill:none;stroke:var(--surface-3);stroke-width:9"/>
+    <circle cx="42" cy="42" r="${r}" transform="rotate(-90 42 42)"
+      style="fill:none;stroke:${bande(n)};stroke-width:9;stroke-linecap:round;stroke-dasharray:${c.toFixed(1)};stroke-dashoffset:${off.toFixed(1)}"/>
+    <text x="42" y="46" text-anchor="middle" style="fill:var(--ink);font-size:21px;font-weight:600">${n}</text>
+  </svg>`;
+}
+function listeCourante(){ return trier(filtrer(notes())); }
+
+function renderDrawer(){
+  const d = el("drawer"), sc = el("scrim");
+  if(!state.ouvert){ d.hidden = true; sc.hidden = true; d.innerHTML = ""; return; }
+  const brut = state.candidats.find(c=>c.id===state.ouvert);
+  if(!brut){ state.ouvert = null; return renderDrawer(); }
+  const c = Object.assign({}, brut, {s:scorer(brut)});
+  const v = verdict(c.s.total);
+  const ordre = listeCourante().map(x=>x.id);
+  const pos = ordre.indexOf(c.id);
+
+  d.hidden = false; sc.hidden = false;
+  d.innerHTML = `
+    <header class="drawer-head">
+      <span class="avatar" style="width:40px;height:40px;font-size:14px">${esc(initiales(c))}</span>
+      <div style="flex:1;min-width:0">
+        <h2 id="drawer-nom" style="font-size:17px;letter-spacing:-.015em">${esc(nomDe(c))}</h2>
+        <p style="margin:2px 0 6px;font-size:12.5px;color:var(--ink-3)">${esc(c.titre)} · <span class="mono">${esc(c.ref)}</span></p>
+        <span class="verdict ${v.cls}">${v.txt}</span>
+      </div>
+      <button class="btn btn-quiet btn-sm" data-act="fermer" aria-label="Fermer la fiche">✕</button>
+    </header>
+
+    <div class="drawer-body">
+      <section class="block" style="display:flex;gap:16px;align-items:center">
+        ${anneau(c.s.total)}
+        <div style="flex:1">
+          <h4>Score détaillé</h4>
+          <div class="breakdown">
+            ${CRITERES.map(cr=>{
+              const p = Math.round(c.s.parts[cr.id]*100);
+              return `<div class="bd-row">
+                <span>${esc(cr.label)} <span class="mono" style="color:var(--ink-3);font-size:11px">${state.poids[cr.id]} %</span></span>
+                <span class="bd-track"><span class="bd-fill" style="width:${p}%"></span></span>
+                <span class="bd-pct">${p} %</span>
+              </div>`;
+            }).join("")}
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h4>Compétences (${c.s.obtenues.length}/${SKILLS.length})</h4>
+        <div class="chips">
+          ${c.s.obtenues.map(id=>`<span class="chip chip-static chip-match">${esc(skill(id).court)} ×${skill(id).poids}</span>`).join("")}
+          ${c.s.manquantes.map(id=>`<span class="chip chip-static chip-miss">${esc(skill(id).court)}</span>`).join("")}
+        </div>
+      </section>
+
+      <section class="block">
+        <h4>Profil</h4>
+        <dl class="kv">
+          <dt>Expérience</dt><dd>${c.annees} an${c.annees>1?"s":""} <span style="color:var(--ink-3);font-weight:400">(minimum ${POSTE.experienceMin}, plein pointage à ${POSTE.experienceCible})</span></dd>
+          <dt>Formation</dt><dd>${esc((FORMATIONS[c.formation]||FORMATIONS.aucune).label)}</dd>
+          <dt>Langues</dt><dd>${c.langues.map(l=>l==="fr"?"Français":"Anglais").join(", ")||"—"}</dd>
+          <dt>Ville</dt><dd>${esc(c.ville)}</dd>
+          <dt>Source</dt><dd>${esc(c.source)}</dd>
+          <dt>Reçu le</dt><dd>${esc(dateCourte(c.recu))} <span style="color:var(--ink-3);font-weight:400">(${esc(depuis(c.recu))})</span></dd>
+          <dt>Courriel</dt><dd style="word-break:break-all">${esc(masque(c.courriel))}</dd>
+          <dt>Téléphone</dt><dd>${esc(masque(c.tel))}</dd>
+        </dl>
+      </section>
+
+      <section class="block">
+        <h4>Extrait du CV</h4>
+        <div class="excerpt">${esc(c.resume||"Aucun texte de CV enregistré.")}</div>
+      </section>
+
+      <section class="block">
+        <h4>Évaluation du comité</h4>
+        <div class="rating" role="group" aria-label="Note du comité">
+          ${[1,2,3,4,5].map(n=>`<button data-act="note" data-n="${n}" data-on="${c.note>=n}" aria-label="${n} sur 5">★</button>`).join("")}
+          <button class="btn btn-quiet btn-sm" data-act="note" data-n="0" style="margin-left:6px">Effacer</button>
+        </div>
+        <textarea class="input" id="drawer-note" rows="3" placeholder="Notes d'entrevue, points à valider…" style="margin-top:9px">${esc(c.commentaire)}</textarea>
+      </section>
+    </div>
+
+    <footer class="drawer-foot">
+      <label class="sr" for="drawer-etape">Étape</label>
+      <select class="input" id="drawer-etape" style="width:auto">
+        ${ETAPES.map(e=>`<option value="${e.id}" ${e.id===c.etape?"selected":""}>${esc(e.label)}</option>`).join("")}
+      </select>
+      <button class="btn btn-sm" data-act="favori" aria-pressed="${c.favori}">${c.favori?"★ Favori":"☆ Favori"}</button>
+      <span style="margin-left:auto;display:flex;gap:6px">
+        <button class="btn btn-sm" data-act="prec" ${pos<=0?"disabled":""} aria-label="Candidature précédente">←</button>
+        <button class="btn btn-sm" data-act="suiv" ${pos<0||pos>=ordre.length-1?"disabled":""} aria-label="Candidature suivante">→</button>
+      </span>
+    </footer>`;
+  const ta = el("drawer-note");
+  ta.addEventListener("input", ()=>{ brut.commentaire = ta.value; sauver(); });
+}
+
+/* =====================================================================
+   11. Rail : pondérations et filtres
+   ===================================================================== */
+function renderRail(){
+  const cont = el("criteres");
+  if(!cont.children.length){
+    cont.innerHTML = CRITERES.map(cr=>`
+      <div class="critere">
+        <label for="p-${cr.id}">${esc(cr.label)}</label>
+        <span class="val mono" id="v-${cr.id}"></span>
+        <input type="range" id="p-${cr.id}" data-poids="${cr.id}" min="0" max="60" step="5" value="${state.poids[cr.id]}">
+      </div>`).join("");
+  }
+  CRITERES.forEach(cr=>{
+    el("v-"+cr.id).textContent = state.poids[cr.id]+" %";
+    const r = el("p-"+cr.id);
+    if(+r.value !== state.poids[cr.id]) r.value = state.poids[cr.id];
+  });
+  el("poids-total").textContent = CRITERES.reduce((s,c)=>s+state.poids[c.id],0);
+
+  const chips = el("f-competences");
+  if(!chips.children.length){
+    chips.innerHTML = SKILLS.map(k=>`<button class="chip" data-comp="${k.id}">${esc(k.court)}</button>`).join("");
+  }
+  SKILLS.forEach(k=>chips.querySelector('[data-comp="'+k.id+'"]')
+    .setAttribute("aria-pressed", state.filtres.competences.includes(k.id)));
+
+  if(el("f-q").value !== state.filtres.q) el("f-q").value = state.filtres.q;
+  if(+el("f-score").value !== state.filtres.scoreMin) el("f-score").value = state.filtres.scoreMin;
+  el("f-score-val").textContent = state.filtres.scoreMin;
+  const bf = el("f-favori"), be = el("f-ecartes");
+  bf.setAttribute("aria-pressed", state.filtres.favori); bf.textContent = state.filtres.favori?"Oui":"Non";
+  be.setAttribute("aria-pressed", state.filtres.ecartes); be.textContent = state.filtres.ecartes?"Oui":"Non";
+  el("btn-anon").setAttribute("aria-pressed", state.anonyme);
+}
+
+/* =====================================================================
+   12. Rendu global
+   ===================================================================== */
+function render(){
+  el("poste-count").textContent = state.candidats.length+" CV reçus";
+  document.querySelectorAll(".views button").forEach(b=>{
+    const actif = b.dataset.vue===state.vue;
+    b.setAttribute("aria-selected", actif);
+    el("view-"+b.dataset.vue).hidden = !actif;
+  });
+  renderRail();
+  if(state.vue==="tableau") renderTableau();
+  if(state.vue==="pipeline") renderPipeline();
+  if(state.vue==="liste")    renderListe();
+  renderDrawer();
+  sauver();
+}
+
+/* =====================================================================
+   13. Interactions
+   ===================================================================== */
+function ouvrir(id){ state.ouvert = id; renderDrawer(); }
+function majCandidat(id, patch){
+  const c = state.candidats.find(x=>x.id===id);
+  if(c){ Object.assign(c, patch); render(); }
+}
+
+/* Vues */
+document.querySelectorAll(".views button").forEach(b=>{
+  b.addEventListener("click", ()=>{ state.vue = b.dataset.vue; render(); });
+});
+
+/* Pondérations */
+el("criteres").addEventListener("input", e=>{
+  const id = e.target.dataset.poids;
+  if(!id) return;
+  state.poids[id] = +e.target.value;
+  render();
+});
+el("btn-poids-reset").addEventListener("click", ()=>{ state.poids = poidsDefaut(); render(); });
+
+/* Filtres */
+el("f-q").addEventListener("input", e=>{ state.filtres.q = e.target.value; if(state.vue==="tableau") state.vue="liste"; render(); });
+el("f-score").addEventListener("input", e=>{ state.filtres.scoreMin = +e.target.value; render(); });
+el("f-competences").addEventListener("click", e=>{
+  const id = e.target.dataset.comp; if(!id) return;
+  const l = state.filtres.competences;
+  state.filtres.competences = l.includes(id) ? l.filter(x=>x!==id) : l.concat(id);
+  render();
+});
+el("f-favori").addEventListener("click", ()=>{ state.filtres.favori = !state.filtres.favori; render(); });
+el("f-ecartes").addEventListener("click", ()=>{ state.filtres.ecartes = !state.filtres.ecartes; render(); });
+el("btn-filtres-reset").addEventListener("click", ()=>{
+  state.filtres = { q:"", scoreMin:0, competences:[], favori:false, ecartes:false }; render();
+});
+el("btn-anon").addEventListener("click", ()=>{ state.anonyme = !state.anonyme; render(); });
+
+/* Dossier */
+el("btn-demo").addEventListener("click", ()=>{
+  if(!confirm("Recharger le jeu de démonstration ? Les CV importés seront perdus.")) return;
+  const poids = state.poids, vue = state.vue;
+  state = etatNeuf(); state.poids = poids; state.vue = vue; render();
+});
+el("btn-vider").addEventListener("click", ()=>{
+  if(!confirm("Effacer toutes les candidatures ?")) return;
+  state.candidats = []; state.selection = []; state.ouvert = null; render();
+});
+
+/* Pipeline : glisser-déposer */
+let enCours = null;
+el("kanban").addEventListener("dragstart", e=>{
+  const f = e.target.closest(".fiche"); if(!f) return;
+  enCours = f.dataset.id; f.classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+  try{ e.dataTransfer.setData("text/plain", enCours); }catch(err){}
+});
+el("kanban").addEventListener("dragend", e=>{
+  const f = e.target.closest(".fiche"); if(f) f.classList.remove("dragging");
+  document.querySelectorAll(".col.over").forEach(c=>c.classList.remove("over"));
+  enCours = null;
+});
+el("kanban").addEventListener("dragover", e=>{
+  const col = e.target.closest(".col"); if(!col) return;
+  e.preventDefault(); e.dataTransfer.dropEffect = "move";
+  document.querySelectorAll(".col.over").forEach(c=>c!==col && c.classList.remove("over"));
+  col.classList.add("over");
+});
+el("kanban").addEventListener("drop", e=>{
+  const col = e.target.closest(".col"); if(!col) return;
+  e.preventDefault();
+  const id = enCours || e.dataTransfer.getData("text/plain");
+  col.classList.remove("over");
+  if(id) majCandidat(id, { etape:col.dataset.etape });
+});
+el("kanban").addEventListener("click", e=>{
+  const f = e.target.closest(".fiche"); if(f) ouvrir(f.dataset.id);
+});
+
+/* Liste : tri, sélection, ouverture */
+el("thead-row").addEventListener("click", e=>{
+  const b = e.target.closest("[data-tri]"); if(!b) return;
+  const champ = b.dataset.tri;
+  state.tri = state.tri.champ===champ ? { champ, sens:-state.tri.sens } : { champ, sens:champ==="nom"||champ==="ville"?1:-1 };
+  render();
+});
+el("thead-row").addEventListener("change", e=>{
+  if(e.target.id!=="sel-tout") return;
+  const ids = listeCourante().map(c=>c.id);
+  state.selection = e.target.checked ? ids : [];
+  render();
+});
+el("tbody").addEventListener("change", e=>{
+  const cb = e.target.closest(".sel-un"); if(!cb) return;
+  const id = cb.dataset.id;
+  state.selection = cb.checked ? state.selection.concat(id) : state.selection.filter(x=>x!==id);
+  render();
+});
+el("tbody").addEventListener("click", e=>{
+  if(e.target.closest("input")) return;
+  const tr = e.target.closest("tr[data-id]"); if(tr) ouvrir(tr.dataset.id);
+});
+el("bulk-bar").addEventListener("click", e=>{
+  if(e.target.id==="bulk-vider"){ state.selection = []; render(); }
+  if(e.target.id==="bulk-export"){ ouvrirExport(true); }
+});
+el("bulk-bar").addEventListener("change", e=>{
+  if(e.target.id!=="bulk-etape" || !e.target.value) return;
+  const etape = e.target.value;
+  state.candidats.forEach(c=>{ if(state.selection.includes(c.id)) c.etape = etape; });
+  state.selection = []; render();
+});
+
+/* Tiroir */
+el("drawer").addEventListener("click", e=>{
+  const b = e.target.closest("[data-act]"); if(!b) return;
+  const id = state.ouvert, act = b.dataset.act;
+  if(act==="fermer"){ state.ouvert = null; renderDrawer(); }
+  if(act==="favori"){ const c = state.candidats.find(x=>x.id===id); c.favori = !c.favori; render(); }
+  if(act==="note"){ majCandidat(id, { note:+b.dataset.n }); }
+  if(act==="prec" || act==="suiv"){
+    const ordre = listeCourante().map(x=>x.id), i = ordre.indexOf(id);
+    const j = act==="prec" ? i-1 : i+1;
+    if(j>=0 && j<ordre.length) ouvrir(ordre[j]);
+  }
+});
+el("drawer").addEventListener("change", e=>{
+  if(e.target.id==="drawer-etape") majCandidat(state.ouvert, { etape:e.target.value });
+});
+el("scrim").addEventListener("click", ()=>{
+  if(!el("modal-import").hidden || !el("modal-export").hidden) return fermerModales();
+  state.ouvert = null; renderDrawer();
+});
+
+/* Infobulles des graphiques */
+const tip = el("tip");
+document.addEventListener("mousemove", e=>{
+  const cible = e.target.closest ? e.target.closest("[data-tip]") : null;
+  if(!cible){ tip.hidden = true; return; }
+  tip.hidden = false;
+  tip.textContent = cible.getAttribute("data-tip");
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.min(window.innerWidth-r.width-10, e.clientX+14)+"px";
+  tip.style.top  = Math.max(8, e.clientY-r.height-12)+"px";
+});
+
+/* Clavier */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape"){
+    if(!el("modal-import").hidden || !el("modal-export").hidden) return fermerModales();
+    if(state.ouvert){ state.ouvert = null; renderDrawer(); }
+  }
+  if(state.ouvert && (e.key==="ArrowDown"||e.key==="ArrowUp") && !/input|textarea|select/i.test(e.target.tagName)){
+    e.preventDefault();
+    const ordre = listeCourante().map(x=>x.id), i = ordre.indexOf(state.ouvert);
+    const j = e.key==="ArrowDown" ? i+1 : i-1;
+    if(j>=0 && j<ordre.length) ouvrir(ordre[j]);
+  }
+});
+
+/* =====================================================================
+   14. Import et analyse des CV
+   ===================================================================== */
+const sansAccents = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const VILLES = ["Montréal","Laval","Longueuil","Brossard","Terrebonne","Repentigny","Saint-Jérôme","Boucherville",
+                "Québec","Gatineau","Sherbrooke","Trois-Rivières","Saguenay","Drummondville","Rimouski","Joliette","Granby","Lévis"];
+
+function analyser(texte, nomFichier){
+  const brut = texte.replace(/\r/g,"").trim();
+  const n = sansAccents(brut);
+  const lignes = brut.split("\n").map(l=>l.trim()).filter(Boolean);
+
+  const courriel = (brut.match(/[\w.+-]+@[\w-]+\.[\w.-]+/)||[""])[0];
+  const tel = (brut.match(/(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/)||[""])[0];
+
+  let nomComplet = "";
+  for(const l of lignes.slice(0,6)){
+    if(l.length<=48 && !/[@\d]/.test(l) && /^[^\s]+(\s+[^\s]+){1,3}$/.test(l) && /^[A-ZÀ-Ý]/.test(l)){ nomComplet = l; break; }
+  }
+  if(!nomComplet) nomComplet = (nomFichier||"Candidature importée").replace(/\.[a-z0-9]+$/i,"").replace(/[_-]+/g," ");
+  const mots = nomComplet.split(/\s+/);
+  const prenom = mots[0]||"Candidature", nom = mots.slice(1).join(" ")||"importée";
+
+  let annees = 0;
+  const re = /(\d{1,2})\s*(?:\+\s*)?(?:ans?|annees?|years?)\b/g;
+  let m; while((m = re.exec(n))) annees = Math.max(annees, +m[1]);
+  if(!annees){
+    const debut = n.match(/depuis\s+((?:19|20)\d{2})/);
+    if(debut) annees = Math.max(0, new Date().getFullYear() - +debut[1]);
+  }
+
+  let formation = "aucune";
+  if(/doctorat|ph\.?\s?d/.test(n)) formation = "doctorat";
+  else if(/maitrise|master|m\.?\s?sc|m\.?\s?a\b/.test(n)) formation = "maitrise";
+  else if(/baccalaureat|\bbac\b|bachelor|b\.?\s?a\b/.test(n)) formation = "bac";
+  else if(/certificat/.test(n)) formation = "certificat";
+  else if(/\bdec\b|collegial|technique\b/.test(n)) formation = "dec";
+
+  const ville = VILLES.find(v=>n.includes(sansAccents(v))) || "Non précisée";
+  const langues = ["fr"];
+  if(/anglais|english|bilingue|fluent/.test(n)) langues.push("en");
+
+  const competences = SKILLS.filter(k=>k.kw.some(kw=>n.includes(sansAccents(kw)))).map(k=>k.id);
+
+  const titre = lignes.find(l=>l!==nomComplet && l.length>6 && l.length<=60 && !/[@]/.test(l) && !/^\d/.test(l)) || "Candidature spontanée";
+
+  state.seq += 1;
+  return {
+    id:"i"+Date.now()+"-"+state.seq, ref:"C-"+String(state.seq).padStart(3,"0"),
+    prenom, nom, titre, ville, courriel, tel, annees, formation, langues, competences,
+    source:"Import" + (nomFichier?" · "+nomFichier:""), recu:Date.now(), etape:"nouveau",
+    favori:false, note:0, commentaire:"", resume:brut.slice(0,900), demo:false
+  };
+}
+
+async function texteDuPDF(fichier){
+  if(typeof pdfjsLib === "undefined") throw new Error("lecteur PDF indisponible");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const doc = await pdfjsLib.getDocument({ data:await fichier.arrayBuffer() }).promise;
+  let out = "";
+  for(let p=1; p<=Math.min(doc.numPages,10); p++){
+    const page = await doc.getPage(p);
+    const contenu = await page.getTextContent();
+    let y = null, ligne = "";
+    contenu.items.forEach(it=>{
+      const ny = Math.round(it.transform[5]);
+      if(y!==null && Math.abs(ny-y)>3){ out += ligne.trim()+"\n"; ligne = ""; }
+      ligne += it.str+" "; y = ny;
+    });
+    out += ligne.trim()+"\n";
+  }
+  return out;
+}
+
+function statutImport(msg, ok){
+  el("import-status").innerHTML = `<p class="status ${ok?"status-ok":"status-err"}">${esc(msg)}</p>`;
+}
+async function ajouterFichiers(fichiers){
+  const ajoutes = [], echecs = [];
+  for(const f of fichiers){
+    try{
+      const texte = /\.pdf$/i.test(f.name) ? await texteDuPDF(f) : await f.text();
+      if(!texte.trim()) throw new Error("aucun texte extrait");
+      ajoutes.push(analyser(texte, f.name));
+    }catch(err){ echecs.push(f.name); }
+  }
+  if(ajoutes.length){ state.candidats = ajoutes.concat(state.candidats); state.vue = "pipeline"; render(); }
+  const msg = (ajoutes.length? ajoutes.length+" CV analysé(s) et ajouté(s) aux nouveaux CV. " : "")
+            + (echecs.length? "Illisible(s) : "+echecs.join(", ")+" — collez plutôt le texte ci-dessous." : "");
+  statutImport(msg || "Aucun fichier lisible.", ajoutes.length>0);
+}
+
+el("btn-import").addEventListener("click", ()=>{ el("modal-import").hidden = false; el("scrim").hidden = false; el("import-status").innerHTML=""; el("dropzone").focus(); });
+el("import-fermer").addEventListener("click", fermerModales);
+el("dropzone").addEventListener("click", ()=>el("file-input").click());
+el("dropzone").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el("file-input").click(); } });
+el("file-input").addEventListener("change", e=>{ ajouterFichiers([...e.target.files]); e.target.value = ""; });
+["dragenter","dragover"].forEach(t=>el("dropzone").addEventListener(t, e=>{ e.preventDefault(); el("dropzone").classList.add("over"); }));
+["dragleave","drop"].forEach(t=>el("dropzone").addEventListener(t, e=>{ e.preventDefault(); el("dropzone").classList.remove("over"); }));
+el("dropzone").addEventListener("drop", e=>{ if(e.dataTransfer.files.length) ajouterFichiers([...e.dataTransfer.files]); });
+el("import-ajouter").addEventListener("click", ()=>{
+  const t = el("coller").value.trim();
+  if(!t) return statutImport("Collez le texte d'un CV ou déposez un fichier.", false);
+  state.candidats = [analyser(t,"")].concat(state.candidats);
+  el("coller").value = ""; state.vue = "pipeline"; render();
+  statutImport("CV analysé et ajouté aux nouveaux CV.", true);
+});
+
+/* =====================================================================
+   15. Export
+   ===================================================================== */
+function ouvrirExport(selectionSeule){
+  const source = notes().filter(c=>selectionSeule ? state.selection.includes(c.id) : filtrer(notes()).some(x=>x.id===c.id));
+  el("modal-export").hidden = false; el("scrim").hidden = false;
+  el("export-status").innerHTML = "";
+  el("modal-export").dataset.source = selectionSeule ? "selection" : "filtre";
+  construireExport(source);
+}
+function construireExport(source){
+  const donnees = source || notes().filter(c=>el("modal-export").dataset.source==="selection"
+      ? state.selection.includes(c.id) : filtrer(notes()).some(x=>x.id===c.id));
+  const format = el("export-format").value;
+  if(format==="json"){
+    el("export-texte").value = JSON.stringify(donnees.map(c=>({
+      ref:c.ref, nom:state.anonyme?null:c.prenom+" "+c.nom, titre:c.titre, ville:c.ville,
+      score:c.s.total, verdict:verdict(c.s.total).txt, competences:c.s.obtenues,
+      annees:c.annees, formation:(FORMATIONS[c.formation]||FORMATIONS.aucune).label,
+      etape:ETAPE[c.etape].label, recu:new Date(c.recu).toISOString().slice(0,10),
+      source:c.source, courriel:state.anonyme?null:c.courriel, note:c.note
+    })), null, 2);
+    return;
+  }
+  const entetes = ["Réf","Nom","Titre","Ville","Score","Verdict","Compétences","Expérience","Formation","Étape","Reçu","Source","Courriel","Note"];
+  const cell = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
+  const lignes = donnees.map(c=>[
+    c.ref, state.anonyme?"(anonymisé)":c.prenom+" "+c.nom, c.titre, c.ville, c.s.total, verdict(c.s.total).txt,
+    c.s.obtenues.map(id=>skill(id).court).join(", "), c.annees, (FORMATIONS[c.formation]||FORMATIONS.aucune).label,
+    ETAPE[c.etape].label, new Date(c.recu).toISOString().slice(0,10), c.source,
+    state.anonyme?"(anonymisé)":c.courriel, c.note
+  ].map(cell).join(";"));
+  el("export-texte").value = [entetes.map(cell).join(";")].concat(lignes).join("\n");
+}
+el("btn-export").addEventListener("click", ()=>ouvrirExport(false));
+el("export-format").addEventListener("change", ()=>construireExport());
+el("export-fermer").addEventListener("click", fermerModales);
+el("export-copier").addEventListener("click", async ()=>{
+  const t = el("export-texte");
+  try{
+    await navigator.clipboard.writeText(t.value);
+    el("export-status").innerHTML = '<p class="status status-ok">Copié dans le presse-papiers.</p>';
+  }catch(err){
+    t.focus(); t.select();
+    el("export-status").innerHTML = '<p class="status status-err">Copie automatique refusée par le navigateur — le texte est sélectionné, faites Ctrl/Cmd + C.</p>';
+  }
+});
+
+function fermerModales(){
+  el("modal-import").hidden = true;
+  el("modal-export").hidden = true;
+  if(!state.ouvert) el("scrim").hidden = true;
+}
+
+/* =====================================================================
+   16. Démarrage
+   ===================================================================== */
+state = charger();
+render();
+})();
+</script>
+<!-- @artifact:end -->
+</body>
+</html>
