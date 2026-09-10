@@ -7,15 +7,14 @@
 <title>Elvius Recrutement</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
 /* ------------------------------------------------------------------ *
  * Elvius — jetons de design. Thème clair par défaut, sombre plus bas. *
  * ------------------------------------------------------------------ */
 :root{
-  --display:"Bodoni Moda",Didot,"Times New Roman",serif;
   --sans:"Instrument Sans","Segoe UI",Helvetica,Arial,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --display:var(--sans); --mono:var(--sans);
 
   --ground:#EDECE8; --surface:#FBFAF8; --surface-2:#F4F3EF; --surface-3:#E6E4DD;
   --ink:#16171C; --ink-2:#4E505A; --ink-3:#84868F;
@@ -26,13 +25,11 @@
   --good:#17855C; --good-soft:#DEF0E8;
   --warn:#A96412; --warn-soft:#F7EBD9;
   --bad:#B23A2E;  --bad-soft:#F7E3E0;
-  --st-nouveau:#0E8FA8; --st-presel:#4F63D8; --st-entretien:#A96412;
-  --st-offre:#17855C;   --st-ecarte:#8B8A83;
-  --ramp-1:#E2C4D6; --ramp-2:#CB9EBB; --ramp-3:#B0759D; --ramp-4:#8E4C79; --ramp-5:#6A2C55;
+  --seq-1:#D9B4CB; --seq-2:#BE87A8; --seq-3:#9C5A83; --seq-4:#6A2C55; --st-ecarte:#9B9A93;
   --grid:#E9E7E0;
-  --shadow:0 1px 2px rgba(22,23,28,.05), 0 10px 26px -14px rgba(22,23,28,.22);
-  --shadow-lift:0 2px 5px rgba(22,23,28,.08), 0 20px 44px -18px rgba(22,23,28,.32);
-  --radius:10px;
+  --shadow:none;
+  --shadow-lift:0 20px 44px -20px rgba(22,23,28,.30);
+  --radius:8px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -45,12 +42,10 @@
     --good:#2AA576; --good-soft:#122720;
     --warn:#B8801F; --warn-soft:#2A2113;
     --bad:#DE6E5D;  --bad-soft:#2E1A17;
-    --st-nouveau:#149FAE; --st-presel:#7C7BF2; --st-entretien:#B8801F;
-    --st-offre:#2AA576;   --st-ecarte:#74767F;
-    --ramp-1:#3A2033; --ramp-2:#55304A; --ramp-3:#7A4568; --ramp-4:#A05F89; --ramp-5:#C983AC;
+    --seq-1:#4A2A40; --seq-2:#6E4260; --seq-3:#9A5F86; --seq-4:#C983AC; --st-ecarte:#6F717A;
     --grid:#1F2027;
-    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -14px rgba(0,0,0,.75);
-    --shadow-lift:0 2px 6px rgba(0,0,0,.55), 0 20px 44px -18px rgba(0,0,0,.85);
+    --shadow:none;
+    --shadow-lift:0 20px 44px -20px rgba(0,0,0,.8);
   }
 }
 :root[data-theme="dark"]{
@@ -63,12 +58,10 @@
   --good:#2AA576; --good-soft:#122720;
   --warn:#B8801F; --warn-soft:#2A2113;
   --bad:#DE6E5D;  --bad-soft:#2E1A17;
-  --st-nouveau:#149FAE; --st-presel:#7C7BF2; --st-entretien:#B8801F;
-  --st-offre:#2AA576;   --st-ecarte:#74767F;
-  --ramp-1:#3A2033; --ramp-2:#55304A; --ramp-3:#7A4568; --ramp-4:#A05F89; --ramp-5:#C983AC;
+  --seq-1:#4A2A40; --seq-2:#6E4260; --seq-3:#9A5F86; --seq-4:#C983AC; --st-ecarte:#6F717A;
   --grid:#1F2027;
-  --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -14px rgba(0,0,0,.75);
-  --shadow-lift:0 2px 6px rgba(0,0,0,.55), 0 20px 44px -18px rgba(0,0,0,.85);
+  --shadow:none;
+  --shadow-lift:0 20px 44px -20px rgba(0,0,0,.8);
 }
 
 *{box-sizing:border-box}
@@ -83,7 +76,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 ::selection{background:var(--accent-soft); color:var(--accent-ink)}
 .mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
 .serif{font-family:var(--display)}
-.eyebrow{font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.eyebrow{font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
 .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 
 /* ---------------- Barre supérieure ---------------- */
@@ -94,7 +87,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 }
 .brand{display:flex; align-items:center; gap:12px; min-width:0}
 .wordmark{
-  font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:.16em;
+  font-weight:600; font-size:17px; letter-spacing:.14em;
   line-height:1; padding-right:12px; border-right:1px solid var(--line-strong);
 }
 .brand-title{font-size:14.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
@@ -104,7 +97,7 @@ button,input,select,textarea{font:inherit; color:inherit}
   border:0; background:transparent; color:var(--ink-2); padding:7px 13px; border-radius:6px;
   font-size:13px; font-weight:500; cursor:pointer;
 }
-.views button[aria-selected="true"]{background:var(--surface); color:var(--ink); font-weight:600; box-shadow:var(--shadow)}
+.views button[aria-selected="true"]{background:var(--surface); color:var(--ink); font-weight:600}
 .topbar-actions{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap}
 
 .btn{
@@ -159,13 +152,13 @@ button,input,select,textarea{font:inherit; color:inherit}
 
 /* ---------------- Tampon de décision ---------------- */
 .stamp{
-  display:inline-flex; align-items:center; gap:5px; border:1.5px solid currentColor; border-radius:3px;
-  padding:2px 7px; font-size:9.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; white-space:nowrap;
+  display:inline-flex; align-items:center; gap:5px; border:1px solid currentColor; border-radius:4px;
+  padding:2px 7px; font-size:10.5px; font-weight:600; white-space:nowrap;
 }
 .s-accepte{color:var(--good); background:var(--good-soft)}
 .s-revoir{color:var(--warn); background:var(--warn-soft)}
 .s-rejete{color:var(--bad); background:var(--bad-soft)}
-.stamp-lg{font-size:12px; padding:5px 12px; border-width:2px; transform:rotate(-2.5deg)}
+.stamp-lg{font-size:11.5px; padding:4px 11px}
 
 /* ---------------- Indicateurs ---------------- */
 .kpi-strip{
@@ -174,10 +167,9 @@ button,input,select,textarea{font:inherit; color:inherit}
 }
 .kpi{padding:14px 16px; border-left:1px solid var(--line); display:flex; flex-direction:column; gap:3px; min-width:0}
 .kpi:first-child{border-left:0}
-.kpi-val{font-family:var(--display); font-size:32px; font-weight:600; line-height:1.05; font-variant-numeric:tabular-nums}
+.kpi-val{font-size:30px; font-weight:600; letter-spacing:-.02em; line-height:1.05; font-variant-numeric:tabular-nums}
 .kpi-val small{font-family:var(--sans); font-size:14px; font-weight:500; color:var(--ink-3); margin-left:3px}
 .kpi-note{font-size:11.5px; color:var(--ink-3)}
-.kpi-spark{margin-top:6px}
 
 /* ---------------- Graphiques ---------------- */
 .charts{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:14px; margin-top:14px}
@@ -187,7 +179,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 .legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:11px; font-size:11.5px; color:var(--ink-2)}
 .legend span{display:inline-flex; align-items:center; gap:5px}
 .legend i{width:9px; height:9px; border-radius:2.5px; display:inline-block}
-svg text{font-family:var(--mono); font-variant-numeric:tabular-nums}
+svg text{font-family:var(--sans); font-variant-numeric:tabular-nums}
 .tip{
   position:fixed; z-index:90; pointer-events:none; background:var(--ink); color:var(--on-dark);
   padding:6px 9px; border-radius:6px; font-size:11.5px; box-shadow:var(--shadow-lift); max-width:230px;
@@ -209,24 +201,24 @@ svg text{font-family:var(--mono); font-variant-numeric:tabular-nums}
   border-radius:var(--radius); display:flex; flex-direction:column; max-height:calc(100vh - 190px);
 }
 .col-head{padding:10px 12px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px}
-.col-head .name{font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase}
+.col-head .name{font-size:12.5px; font-weight:600}
 .col-head .count{margin-left:auto; font-size:11.5px; color:var(--ink-3)}
 .col-body{padding:10px; display:flex; flex-direction:column; gap:9px; overflow-y:auto; min-height:96px}
 .col.over{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
 .col-empty{font-size:11.5px; color:var(--ink-3); text-align:center; padding:18px 6px; border:1px dashed var(--line-strong); border-radius:8px}
 
 .fiche{
-  background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--stage,var(--line-strong));
-  border-radius:3px 3px 8px 8px; padding:10px 11px 11px; cursor:grab; box-shadow:var(--shadow); text-align:left; width:100%;
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:8px; padding:10px 11px 11px; cursor:grab; text-align:left; width:100%;
   display:flex; flex-direction:column; gap:8px; font:inherit; color:inherit;
 }
-.fiche:hover{box-shadow:var(--shadow-lift); transform:translateY(-1px)}
+.fiche:hover{border-color:var(--line-strong)}
 .fiche.dragging{opacity:.45; cursor:grabbing}
 .fiche .chip{font-size:10.5px; padding:3px 7px}
 .fiche-top{display:flex; align-items:flex-start; gap:9px}
 .avatar{
   width:30px; height:30px; border-radius:6px; flex:none; display:grid; place-items:center;
-  background:var(--surface-3); color:var(--ink-2); font-family:var(--display); font-size:12px; font-weight:600;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--ink-3); font-size:11.5px; font-weight:600;
 }
 .fiche-name{display:block; font-size:13.5px; font-weight:600; line-height:1.25}
 .fiche-role{
@@ -238,7 +230,7 @@ svg text{font-family:var(--mono); font-variant-numeric:tabular-nums}
 
 .score{display:flex; align-items:center; gap:8px}
 .score-track{flex:1; height:6px; border-radius:3px; background:var(--surface-3); overflow:hidden; min-width:40px}
-.score-fill{display:block; height:100%; border-radius:3px; background:var(--band,var(--ramp-3))}
+.score-fill{display:block; height:100%; border-radius:3px; background:var(--accent)}
 .score-num{font-family:var(--mono); font-size:12.5px; font-variant-numeric:tabular-nums; min-width:30px; text-align:right}
 .star{color:var(--warn)}
 
@@ -248,7 +240,7 @@ table{border-collapse:collapse; width:100%; min-width:900px}
 th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:middle}
 thead th{
   position:sticky; top:0; background:var(--surface-2); z-index:2;
-  font-size:10.5px; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3);
+  font-size:11.5px; font-weight:600; color:var(--ink-3);
   border-bottom:1px solid var(--line-strong); white-space:nowrap;
 }
 thead th button{background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; display:inline-flex; gap:4px; align-items:center}
@@ -274,8 +266,8 @@ td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:n
 .comp-row:first-of-type{border-top:0}
 .comp-head{
   display:grid; grid-template-columns:minmax(0,1.3fr) 56px minmax(0,1.7fr) auto auto;
-  gap:8px; font-size:10.5px; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
-  color:var(--ink-3); padding-bottom:7px; border-bottom:1px solid var(--line-strong);
+  gap:8px; font-size:11.5px; font-weight:600; color:var(--ink-3);
+  padding-bottom:7px; border-bottom:1px solid var(--line);
 }
 .comp-row .input{padding:6px 8px; font-size:12.5px}
 .oblig{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:var(--ink-2); white-space:nowrap}
@@ -298,7 +290,7 @@ td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:n
 .drawer-head{padding:16px 18px 14px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:flex-start}
 .drawer-body{padding:16px 18px 28px; overflow-y:auto; display:flex; flex-direction:column; gap:18px}
 .drawer-foot{padding:10px 18px; border-top:1px solid var(--line); display:flex; gap:8px; align-items:center; background:var(--surface-2)}
-.block h4{font-size:10.5px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin-bottom:9px}
+.block h4{font-size:11.5px; font-weight:600; color:var(--ink-3); margin-bottom:9px}
 .motifs{margin:0; padding-left:17px; font-size:12.5px; color:var(--ink-2)}
 .motifs li{margin-bottom:3px}
 .breakdown{display:flex; flex-direction:column; gap:9px}
@@ -644,11 +636,12 @@ const FORMATIONS = {
   doctorat:  { label:"Doctorat", valeur:1, rang:5 }
 };
 
+/* Les étapes sont ordonnées : une seule teinte qui fonce à mesure qu'on avance. */
 const ETAPES = [
-  { id:"nouveau",   label:"Nouveaux CV",   couleur:"var(--st-nouveau)" },
-  { id:"presel",    label:"Présélection",  couleur:"var(--st-presel)" },
-  { id:"entretien", label:"Entretien",     couleur:"var(--st-entretien)" },
-  { id:"offre",     label:"Offre",         couleur:"var(--st-offre)" },
+  { id:"nouveau",   label:"Nouveaux CV",   couleur:"var(--seq-1)" },
+  { id:"presel",    label:"Présélection",  couleur:"var(--seq-2)" },
+  { id:"entretien", label:"Entretien",     couleur:"var(--seq-3)" },
+  { id:"offre",     label:"Offre",         couleur:"var(--seq-4)" },
   { id:"ecarte",    label:"Écartés",       couleur:"var(--st-ecarte)" }
 ];
 const ETAPE = Object.fromEntries(ETAPES.map(e=>[e.id,e]));
@@ -855,8 +848,7 @@ function mediane(xs){
   const t=[...xs].sort((a,b)=>a-b), m=t.length>>1;
   return t.length%2 ? t[m] : Math.round((t[m-1]+t[m])/2);
 }
-const RAMPE = ["var(--ramp-1)","var(--ramp-2)","var(--ramp-3)","var(--ramp-4)","var(--ramp-5)"];
-const bande = n => RAMPE[Math.min(4, Math.floor(n/20))];
+const bande = () => "var(--accent)";
 
 /* =====================================================================
    6. Notation et décision
@@ -1033,21 +1025,10 @@ function chartSkills(actives){
     s += T(LXL, y+14, l.k.court, {anchor:"end", fill:"var(--ink-2)", size:11.5});
     s += T(LX, y+14, (l.k.obligatoire?"oblig. ":"")+"×"+l.k.poids, {anchor:"end", size:10.5, fill:l.k.obligatoire?"var(--bad)":"var(--ink-3)"});
     s += `<rect x="${BX}" y="${y+4}" width="${BW}" height="12" rx="3" style="fill:var(--grid)"/>`;
-    if(l.n) s += `<rect x="${BX}" y="${y+4}" width="${w}" height="12" rx="3" style="fill:var(--ramp-4)" data-tip="${esc(l.k.court)} · ${l.n} candidature${l.n>1?"s":""} sur ${n} · poids ×${l.k.poids}${l.k.obligatoire?" · obligatoire":""}"/>`;
+    if(l.n) s += `<rect x="${BX}" y="${y+4}" width="${w}" height="12" rx="3" style="fill:var(--accent)" data-tip="${esc(l.k.court)} · ${l.n} candidature${l.n>1?"s":""} sur ${n} · poids ×${l.k.poids}${l.k.obligatoire?" · obligatoire":""}"/>`;
     s += T(BX+w+7, y+14, pct+" %", {fill:"var(--ink-2)", size:10.5, w:600});
   });
   return s+"</svg>";
-}
-
-function sparkline(vals){
-  const W=118, H=30, max=Math.max(1,...vals);
-  const pts = vals.map((v,i)=>[ (W-2)*i/Math.max(1,vals.length-1)+1, H-3-(H-9)*v/max ]);
-  const d = pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
-  const der = pts[pts.length-1];
-  return svgOpen(W,H,true)
-    + `<path d="${d} L ${W-1} ${H-3} L 1 ${H-3} Z" style="fill:var(--accent);opacity:.14"/>`
-    + `<path d="${d}" style="fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round"/>`
-    + `<circle cx="${der[0].toFixed(1)}" cy="${der[1].toFixed(1)}" r="3" style="fill:var(--accent);stroke:var(--surface);stroke-width:2"/></svg>`;
 }
 
 /* =====================================================================
@@ -1088,18 +1069,11 @@ function renderTableau(){
   const actives = tous.filter(c=>c.etape!=="ecarte");
   const acceptes = tous.filter(c=>c.d.statut==="accepte").length;
   const rejetes = tous.filter(c=>c.d.statut==="rejete").length;
-  const semaines = [0,0,0,0,0,0];
-  tous.forEach(c=>{
-    const i = 5 - Math.floor((Date.now()-c.recu)/(7*864e5));
-    if(i>=0 && i<6) semaines[i]++;
-  });
-
   el("kpis").innerHTML = `
     <div class="kpi">
       <span class="eyebrow">CV reçus</span>
       <span class="kpi-val">${tous.length}</span>
       <span class="kpi-note">${state.candidats.filter(c=>c.etape==="ecarte").length} écarté(s) du pipeline</span>
-      <div class="kpi-spark">${sparkline(semaines)}</div>
     </div>
     <div class="kpi">
       <span class="eyebrow">Score médian</span>
@@ -1131,7 +1105,7 @@ function ficheHTML(c){
   const reste = Math.max(0, c.s.obtenues.length-2);
   const top = c.s.obtenues.slice(0,2).map(id=>`<span class="chip chip-static chip-match">${esc((comp(id)||{}).court||"")}</span>`).join("")
     + (reste?`<span class="chip chip-static">+${reste}</span>`:"");
-  return `<button class="fiche" draggable="true" data-id="${c.id}" style="--stage:${ETAPE[c.etape].couleur}">
+  return `<button class="fiche" draggable="true" data-id="${c.id}">
     <span class="fiche-top">
       <span class="avatar">${esc(initiales(c))}</span>
       <span style="min-width:0">
@@ -1141,7 +1115,7 @@ function ficheHTML(c){
       <span class="fiche-id mono">${esc(c.ref)}</span>
     </span>
     <span class="score">
-      <span class="score-track"><span class="score-fill" style="width:${c.s.total}%;--band:${bande(c.s.total)}"></span></span>
+      <span class="score-track"><span class="score-fill" style="width:${c.s.total}%"></span></span>
       <span class="score-num">${c.s.total}</span>
     </span>
     <span class="chips">${top}</span>
@@ -1219,7 +1193,7 @@ function renderListe(){
       </td>
       <td style="min-width:132px">
         <div class="score">
-          <span class="score-track"><span class="score-fill" style="width:${c.s.total}%;--band:${bande(c.s.total)}"></span></span>
+          <span class="score-track"><span class="score-fill" style="width:${c.s.total}%"></span></span>
           <span class="score-num">${c.s.total}</span>
         </div>
       </td>
@@ -1228,7 +1202,7 @@ function renderListe(){
       <td class="num">${c.annees} an${c.annees>1?"s":""}</td>
       <td>${esc((FORMATIONS[c.formation]||FORMATIONS.aucune).label)}</td>
       <td>${esc(c.lieu)}</td>
-      <td><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="color:${ETAPE[c.etape].couleur}"></span>${esc(ETAPE[c.etape].label)}</span></td>
+      <td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="color:${ETAPE[c.etape].couleur}"></span>${esc(ETAPE[c.etape].label)}</span></td>
       <td class="num" style="color:var(--ink-3)">${esc(depuisCourt(c.recu))}</td>
     </tr>`;
   }).join("") : `<tr><td colspan="10"><p class="empty">Aucune candidature ne correspond aux filtres.</p></td></tr>`;
