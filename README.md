@@ -102,16 +102,21 @@ Le nom du dépôt ne prend que des traits d'union. Un tiret bas donne
 `ERR_PNPM_GIT_RESOLVE_FAILED` : GitHub ne trouve pas le dépôt et pnpm croit alors qu'il
 est privé.
 
-**Le cache de pnpm ne peut plus vous servir du périmé.** `pnpm dlx` réutilise pendant 24 h
-ce qu'il a téléchargé ; la commande contourne le problème en allant chercher `index.html`
-sur la branche `main` à chaque démarrage. Elle annonce ce qu'elle sert :
+**Le cache ne peut plus vous servir du périmé.** `pnpm dlx` réutilise pendant 24 h ce
+qu'il a téléchargé. Au démarrage, la commande lit la version du paquet, va chercher celle
+publiée sur `main`, et **sert la plus récente des deux** — un cache réseau intermédiaire ne
+peut donc pas non plus la faire régresser. Elle annonce toujours ce qu'elle sert :
 
 ```
 Présélection des CV — application v1.2.0 · dernière version en ligne
+Présélection des CV — application v1.2.0 · copie du paquet — GitHub injoignable (…)
 ```
 
-Si GitHub est injoignable, elle sert la copie du paquet et le dit. `--offline` saute la
-requête et sert cette copie directement.
+`--offline` saute la requête et sert la copie du paquet directement.
+
+La comparaison se fait sur `<meta name="app-version">` dans `index.html` : toute
+modification de la page doit s'accompagner d'une montée de ce numéro et de celui de
+`package.json`.
 
 Une seule fois, si votre cache contient encore une version antérieure à 1.2.0, forcez le
 rafraîchissement du paquet lui-même — ensuite la mise à jour est automatique :

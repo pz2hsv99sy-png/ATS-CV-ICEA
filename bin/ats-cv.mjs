@@ -32,31 +32,48 @@ const drapeau = (nom, defaut) => {
 };
 const portDemande = Number(drapeau("--port", process.env.PORT || 5173));
 const versionDe = (html) =>
-  (html.match(/<meta name="app-version" content="([^"]+)"/) || [, "inconnue"])[1];
+  (html.match(/<meta name="app-version" content="([^"]+)"/) || [, "0"])[1];
 
-/* La copie du paquet est le filet de sécurité ; la version en ligne gagne. */
+/* On sert la plus récente des deux : celle du paquet et celle publiée.
+   Ainsi ni le cache de pnpm, ni un cache réseau intermédiaire ne peuvent
+   faire tourner une version périmée. */
+const rang = (v) => v.split(".").map((n) => parseInt(n, 10) || 0);
+const plusRecent = (a, b) => {
+  const [A, B] = [rang(a), rang(b)];
+  for (let i = 0; i < 3; i++) if ((A[i] || 0) !== (B[i] || 0)) return (A[i] || 0) > (B[i] || 0);
+  return false;
+};
+
 let page = await readFile(join(racine, "index.html"), "utf8");
+let version = versionDe(page);
 let provenance = "copie du paquet";
 
 if (!args.includes("--offline")) {
   try {
-    const rep = await fetch(SOURCE, {
+    /* Le CDN de raw.githubusercontent.com garde une copie quelques minutes ;
+       un paramètre unique force une réponse fraîche. */
+    const rep = await fetch(`${SOURCE}?t=${Date.now()}`, {
       cache: "no-store",
       signal: AbortSignal.timeout(6000),
-      headers: { "user-agent": "ats-cv" }
+      headers: { "user-agent": "ats-cv", "cache-control": "no-cache" }
     });
     if (!rep.ok) throw new Error("HTTP " + rep.status);
     const frais = await rep.text();
     if (!frais.includes("</html>")) throw new Error("réponse incomplète");
-    page = frais;
-    provenance = "dernière version en ligne";
+    const vFrais = versionDe(frais);
+    if (plusRecent(version, vFrais)) {
+      provenance = `copie du paquet — la version en ligne (v${vFrais}) est plus ancienne`;
+    } else {
+      page = frais;
+      version = vFrais;
+      provenance = "dernière version en ligne";
+    }
   } catch (err) {
-    provenance = `copie du paquet (GitHub injoignable : ${err.message})`;
+    provenance = `copie du paquet — GitHub injoignable (${err.message})`;
   }
 }
 
 const corps = Buffer.from(page, "utf8");
-const version = versionDe(page);
 
 const serveur = createServer((req, res) => {
   const chemin = (req.url || "/").split("?")[0];
