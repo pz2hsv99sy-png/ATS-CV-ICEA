@@ -66,24 +66,24 @@ pnpm check    # vérifie la syntaxe du script embarqué dans index.html
 Sans cloner, directement depuis GitHub :
 
 ```sh
-pnpm dlx "github:pz2hsv99sy-png/ATS-CV-ICEA#claude/ats-cv-sorting-ui-mkio3h"
+pnpm dlx github:pz2hsv99sy-png/ATS-CV-ICEA
 ```
 
-Le nom du dépôt et celui de la branche ne prennent que des traits d'union. Un tiret bas
-donne `ERR_PNPM_GIT_RESOLVE_FAILED` : GitHub ne trouve pas le dépôt et pnpm croit alors
-qu'il est privé.
+Le nom du dépôt ne prend que des traits d'union. Un tiret bas donne
+`ERR_PNPM_GIT_RESOLVE_FAILED` : GitHub ne trouve pas le dépôt et pnpm croit alors qu'il
+est privé.
 
 Sur Windows, sans Node ni pnpm — un navigateur suffit :
 
 ```powershell
-iwr "https://raw.githubusercontent.com/pz2hsv99sy-png/ATS-CV-ICEA/claude/ats-cv-sorting-ui-mkio3h/index.html" -OutFile ats-cv.html
+iwr "https://raw.githubusercontent.com/pz2hsv99sy-png/ATS-CV-ICEA/main/index.html" -OutFile ats-cv.html
 start ats-cv.html
 ```
 
 Ou en dépendance d'un projet existant :
 
 ```sh
-pnpm add github:pz2hsv99sy-png/ATS-CV-ICEA#claude/ats-cv-sorting-ui-mkio3h
+pnpm add github:pz2hsv99sy-png/ATS-CV-ICEA
 pnpm exec ats-cv --port 8080 --open
 ```
 
