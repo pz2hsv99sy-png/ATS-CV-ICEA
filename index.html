@@ -275,6 +275,7 @@ td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:n
 .seuil-row{display:grid; grid-template-columns:1fr auto; gap:2px 8px; padding:10px 0; border-top:1px solid var(--line)}
 .seuil-row input[type=range]{grid-column:1/-1; accent-color:var(--accent); width:100%}
 .pair{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.trio{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
 
 /* ---------------- Tiroir ---------------- */
 .scrim{position:fixed; inset:0; background:rgba(13,14,18,.44); z-index:40; backdrop-filter:blur(1.5px)}
@@ -347,7 +348,7 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
   .kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpi:nth-child(3){border-left:0}
   .kpi:nth-child(n+3){border-top:1px solid var(--line)}
-  .pair{grid-template-columns:1fr}
+  .pair, .trio{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important; transition-duration:.01ms !important}
@@ -523,35 +524,43 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
         <div style="display:flex; flex-direction:column; gap:14px">
           <div class="card">
             <h3>Le poste</h3>
-            <p class="card-sub">Ces exigences alimentent quatre des cinq critères de notation.</p>
+            <p class="card-sub">Chaque critère chiffré a un minimum, une cible qui vaut 100 %, et un
+              plafond facultatif. Les règles éliminatoires s'appuient sur ces nombres.</p>
             <div class="field">
               <label for="g-poste">Intitulé</label>
               <input class="input" id="g-poste" type="text">
             </div>
+
+            <h4 class="eyebrow" style="margin:18px 0 9px">Années d'expérience</h4>
+            <div class="trio">
+              <div class="field"><label for="g-exp-min">Minimum</label>
+                <input class="input" id="g-exp-min" type="number" min="0" max="50" step="1"></div>
+              <div class="field"><label for="g-exp-cible">100 % à</label>
+                <input class="input" id="g-exp-cible" type="number" min="1" max="50" step="1"></div>
+              <div class="field"><label for="g-exp-max">Plafond <span class="aide">0 = aucun</span></label>
+                <input class="input" id="g-exp-max" type="number" min="0" max="50" step="1"></div>
+            </div>
+
+            <h4 class="eyebrow" style="margin:14px 0 9px">Années de formation <span class="aide" style="text-transform:none; letter-spacing:0">après le secondaire</span></h4>
+            <div class="trio">
+              <div class="field"><label for="g-form-min">Minimum</label>
+                <input class="input" id="g-form-min" type="number" min="0" max="15" step="1"></div>
+              <div class="field"><label for="g-form-cible">100 % à</label>
+                <input class="input" id="g-form-cible" type="number" min="1" max="15" step="1"></div>
+              <div class="field"><label for="g-form-max">Plafond <span class="aide">0 = aucun</span></label>
+                <input class="input" id="g-form-max" type="number" min="0" max="15" step="1"></div>
+            </div>
+
+            <h4 class="eyebrow" style="margin:14px 0 9px">Nombre de langues</h4>
             <div class="pair">
-              <div class="field">
-                <label for="g-exp-min">Expérience minimale <span class="aide">(années)</span></label>
-                <input class="input" id="g-exp-min" type="number" min="0" max="40" step="1">
-              </div>
-              <div class="field">
-                <label for="g-exp-cible">Plein pointage à <span class="aide">(années)</span></label>
-                <input class="input" id="g-exp-cible" type="number" min="1" max="40" step="1">
-              </div>
+              <div class="field"><label for="g-lang-min">Minimum</label>
+                <input class="input" id="g-lang-min" type="number" min="0" max="9" step="1"></div>
+              <div class="field"><label for="g-lang-cible">100 % à</label>
+                <input class="input" id="g-lang-cible" type="number" min="1" max="9" step="1"></div>
             </div>
-            <div class="field">
-              <label for="g-formation">Formation minimale exigée</label>
-              <select class="input" id="g-formation"></select>
-            </div>
-            <div class="field">
-              <label for="g-langues-ex">Langues exigées <span class="aide">séparées par des virgules</span></label>
-              <input class="input" id="g-langues-ex" type="text" placeholder="Français, Anglais">
-            </div>
-            <div class="field">
-              <label for="g-langues-at">Langues valorisées <span class="aide">un atout, pas une exigence</span></label>
-              <input class="input" id="g-langues-at" type="text" placeholder="Espagnol">
-            </div>
-            <div class="field" style="margin-bottom:0">
-              <label for="g-lieux">Lieux acceptés <span class="aide">villes, régions, pays ou « à distance » — laissez vide pour ne pas filtrer</span></label>
+
+            <div class="field" style="margin:14px 0 0">
+              <label for="g-lieux">Lieux acceptés <span class="aide">villes, régions, pays ou « à distance » — vide = pas de filtre</span></label>
               <input class="input" id="g-lieux" type="text" placeholder="Ex. : Lyon, Bruxelles, à distance">
             </div>
           </div>
@@ -619,18 +628,26 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
 const CRITERES = [
   { id:"competences", label:"Compétences exigées", defaut:45 },
   { id:"experience",  label:"Années d'expérience", defaut:25 },
-  { id:"formation",   label:"Formation",           defaut:15 },
-  { id:"langues",     label:"Langues",             defaut:10 },
+  { id:"formation",   label:"Années de formation", defaut:15 },
+  { id:"langues",     label:"Nombre de langues",   defaut:10 },
   { id:"lieu",        label:"Lieu de travail",     defaut:5  }
 ];
 
+/* Les diplômes servent d'étiquette ; la note, elle, se calcule sur les années d'études. */
 const FORMATIONS = {
-  aucune:    { label:"Non précisée", valeur:.25, rang:0 },
-  dec:       { label:"Diplôme technique", valeur:.4, rang:1 },
-  certificat:{ label:"Certificat", valeur:.5, rang:2 },
-  bac:       { label:"Licence / baccalauréat", valeur:.75, rang:3 },
-  maitrise:  { label:"Maîtrise / master", valeur:.95, rang:4 },
-  doctorat:  { label:"Doctorat", valeur:1, rang:5 }
+  aucune:    { label:"Non précisée", annees:0 },
+  certificat:{ label:"Certificat", annees:1 },
+  dec:       { label:"Diplôme technique", annees:2 },
+  bac:       { label:"Licence / baccalauréat", annees:3 },
+  maitrise:  { label:"Maîtrise / master", annees:5 },
+  doctorat:  { label:"Doctorat", annees:8 }
+};
+const anneesFormationDe = c => Number.isFinite(c.anneesFormation)
+  ? c.anneesFormation : (FORMATIONS[c.formation]||FORMATIONS.aucune).annees;
+const diplomeDe = c => {
+  const n = anneesFormationDe(c);
+  const cles = Object.keys(FORMATIONS).sort((a,b)=>FORMATIONS[b].annees-FORMATIONS[a].annees);
+  return FORMATIONS[cles.find(k=>FORMATIONS[k].annees<=n) || "aucune"].label;
 };
 
 /* Les étapes sont ordonnées : une seule teinte qui fonce à mesure qu'on avance. */
@@ -643,6 +660,17 @@ const ETAPES = [
 ];
 const ETAPE = Object.fromEntries(ETAPES.map(e=>[e.id,e]));
 
+function bornes(g){
+  return { experience:g.experienceMin, experienceMax:g.experienceMax,
+           formation:g.formationMin, formationMax:g.formationMax, langues:g.languesMin };
+}
+/* Les libellés de règles portent le nombre en vigueur : « Moins de 4 années… ». */
+function titreRegle(r, g){
+  const v = bornes(g)[r.id];
+  if(v === undefined) return r.titre;
+  return r.titre.replace("X", (/Max$/.test(r.id) && !v) ? "…" : v);
+}
+
 const STATUTS = {
   accepte:{ label:"Accepté", cls:"s-accepte", couleur:"var(--good)" },
   revoir: { label:"À revoir", cls:"s-revoir", couleur:"var(--warn)" },
@@ -650,13 +678,19 @@ const STATUTS = {
 };
 
 const REGLES = [
-  { id:"experience",  titre:"Expérience sous le minimum exigé",
-    desc:"Rejet immédiat d'un CV qui n'atteint pas le nombre d'années demandé." },
-  { id:"competence",  titre:"Compétence obligatoire absente",
+  { id:"experience",    titre:"Moins de X années d'expérience",
+    desc:"Rejet d'un CV sous le minimum d'expérience du poste." },
+  { id:"experienceMax", titre:"Plus de X années d'expérience",
+    desc:"Rejet au-delà du plafond d'expérience, quand le poste vise un profil moins avancé." },
+  { id:"formation",     titre:"Moins de X années de formation",
+    desc:"Rejet sous le nombre d'années d'études demandé." },
+  { id:"formationMax",  titre:"Plus de X années de formation",
+    desc:"Rejet au-delà du plafond d'études." },
+  { id:"langues",       titre:"Moins de X langues",
+    desc:"Rejet d'un CV qui ne démontre pas assez de langues." },
+  { id:"competence",    titre:"Compétence obligatoire absente",
     desc:"Rejet si l'une des compétences cochées « obligatoire » n'apparaît pas dans le CV." },
-  { id:"formation",   titre:"Formation sous le niveau exigé",
-    desc:"Rejet si le diplôme détecté est inférieur au niveau minimal du poste." },
-  { id:"lieu",        titre:"Lieu hors de la liste acceptée",
+  { id:"lieu",          titre:"Lieu hors de la liste acceptée",
     desc:"Rejet si le lieu du CV ne figure pas dans vos lieux acceptés." }
 ];
 
@@ -688,11 +722,16 @@ function grilleDefaut(){
       { id:"k10", court:"Anglais professionnel", poids:2, obligatoire:false,
         kw:["anglais","bilingue","english","fluent"] }
     ],
-    experienceMin:4, experienceCible:6, formationMin:"",
-    languesExigees:["Français"], languesAtouts:["Anglais"], lieux:[],
+    /* Chaque critère chiffré a un plancher, une cible (plein pointage) et un
+       plafond facultatif — 0 signifiant « pas de plafond ». */
+    experienceMin:4, experienceCible:6, experienceMax:0,
+    formationMin:3,  formationCible:5,  formationMax:0,
+    languesMin:1,    languesCible:2,
+    lieux:[],
     poids:Object.fromEntries(CRITERES.map(c=>[c.id,c.defaut])),
     seuilAccept:75, seuilRejet:50,
-    eliminatoires:{ experience:true, competence:true, formation:false, lieu:false },
+    eliminatoires:{ experience:true, experienceMax:false, formation:false,
+                    formationMax:false, langues:false, competence:true, lieu:false },
     autoImport:true
   };
 }
@@ -810,9 +849,19 @@ function charger(){
     const s = JSON.parse(brut);
     if(!s || !Array.isArray(s.candidats)) return etatNeuf();
     const base = etatNeuf();
+    const d = grilleDefaut();
     const g = Object.assign(base.grille, s.grille||{});
-    g.poids = Object.assign(grilleDefaut().poids, (s.grille&&s.grille.poids)||{});
-    g.eliminatoires = Object.assign(grilleDefaut().eliminatoires, (s.grille&&s.grille.eliminatoires)||{});
+    g.poids = Object.assign(d.poids, (s.grille&&s.grille.poids)||{});
+    g.eliminatoires = Object.assign(d.eliminatoires, (s.grille&&s.grille.eliminatoires)||{});
+    /* Une grille enregistrée par une version antérieure peut porter du texte
+       là où l'on attend désormais un nombre. */
+    ["experienceMin","experienceCible","experienceMax","formationMin","formationCible",
+     "formationMax","languesMin","languesCible","seuilAccept","seuilRejet"].forEach(k=>{
+      const v = Number(g[k]);
+      g[k] = Number.isFinite(v) ? v : d[k];
+    });
+    if(!Array.isArray(g.lieux)) g.lieux = [];
+    delete g.languesExigees; delete g.languesAtouts;
     return Object.assign(base, s, { grille:g, filtres:Object.assign(base.filtres, s.filtres||{}),
                                     selection:[], ouvert:null });
   }catch(e){ return etatNeuf(); }
@@ -850,10 +899,6 @@ const bande = () => "var(--accent)";
 /* =====================================================================
    6. Notation et décision
    ===================================================================== */
-function parleLangue(c, demandee){
-  const d = norm(demandee);
-  return (c.langues||[]).some(l=>{ const x = norm(l); return x===d || x.includes(d) || d.includes(x); });
-}
 function lieuAccepte(c){
   const g = state.grille;
   if(!g.lieux.length) return true;
@@ -864,16 +909,11 @@ function scorer(c){
   const g = state.grille;
   const poidsTotal = comps().reduce((s,k)=>s+(+k.poids||0),0) || 1;
   const obtenues = comps().filter(k=>c.competences.includes(k.id));
-
-  const ex = g.languesExigees, at = g.languesAtouts;
-  const partEx = ex.length ? ex.filter(l=>parleLangue(c,l)).length/ex.length : 1;
-  const partAt = at.length ? at.filter(l=>parleLangue(c,l)).length/at.length : 0;
-
   const parts = {
     competences: obtenues.reduce((s,k)=>s+(+k.poids||0),0)/poidsTotal,
     experience:  Math.min(1, c.annees/Math.max(1, g.experienceCible)),
-    formation:   (FORMATIONS[c.formation]||FORMATIONS.aucune).valeur,
-    langues:     at.length ? .75*partEx + .25*partAt : partEx,
+    formation:   Math.min(1, anneesFormationDe(c)/Math.max(1, g.formationCible)),
+    langues:     Math.min(1, (c.langues||[]).length/Math.max(1, g.languesCible)),
     lieu:        lieuAccepte(c) ? 1 : .2
   };
   const sommeP = CRITERES.reduce((s,cr)=>s+(+g.poids[cr.id]||0),0) || 1;
@@ -886,22 +926,34 @@ function scorer(c){
 /* Le verdict est recalculé en direct : changez la grille, les tampons suivent. */
 function decider(c, s){
   const g = state.grille, e = g.eliminatoires, motifs = [], regles = [];
+  const ans = n => n + " an" + (n>1?"s":"");
+  const formation = anneesFormationDe(c), langues = (c.langues||[]).length;
 
-  if(e.experience && c.annees < g.experienceMin)
-    { motifs.push(`Expérience de ${c.annees} an${c.annees>1?"s":""} sous le minimum exigé de ${g.experienceMin}.`); regles.push("experience"); }
-
+  if(e.experience && c.annees < g.experienceMin){
+    motifs.push(`Expérience de ${ans(c.annees)} sous le minimum de ${ans(g.experienceMin)}.`);
+    regles.push("experience");
+  }
+  if(e.experienceMax && g.experienceMax > 0 && c.annees > g.experienceMax){
+    motifs.push(`Expérience de ${ans(c.annees)} au-delà du plafond de ${ans(g.experienceMax)}.`);
+    regles.push("experienceMax");
+  }
+  if(e.formation && formation < g.formationMin){
+    motifs.push(`${ans(formation)} de formation, sous le minimum de ${ans(g.formationMin)}.`);
+    regles.push("formation");
+  }
+  if(e.formationMax && g.formationMax > 0 && formation > g.formationMax){
+    motifs.push(`${ans(formation)} de formation, au-delà du plafond de ${ans(g.formationMax)}.`);
+    regles.push("formationMax");
+  }
+  if(e.langues && langues < g.languesMin){
+    motifs.push(`${langues} langue${langues>1?"s":""} démontrée${langues>1?"s":""}, minimum exigé : ${g.languesMin}.`);
+    regles.push("langues");
+  }
   if(e.competence){
     const absentes = comps().filter(k=>k.obligatoire && !c.competences.includes(k.id));
     if(absentes.length){
       motifs.push("Compétence obligatoire absente : "+absentes.map(k=>k.court).join(", ")+".");
       regles.push("competence");
-    }
-  }
-  if(e.formation && g.formationMin){
-    const r = (FORMATIONS[c.formation]||FORMATIONS.aucune).rang, min = FORMATIONS[g.formationMin].rang;
-    if(r < min){
-      motifs.push(`Formation « ${(FORMATIONS[c.formation]||FORMATIONS.aucune).label} » sous le niveau exigé (${FORMATIONS[g.formationMin].label}).`);
-      regles.push("formation");
     }
   }
   if(e.lieu && g.lieux.length && !lieuAccepte(c)){
@@ -911,10 +963,10 @@ function decider(c, s){
 
   if(motifs.length) return { statut:"rejete", motifs, regles, eliminatoire:true };
   if(s.total >= g.seuilAccept)
-    return { statut:"accepte", motifs:[`Score de ${s.total} au-dessus du seuil d'acceptation (${g.seuilAccept}).`], regles:[], eliminatoire:false };
+    return { statut:"accepte", motifs:[`Score de ${s.total} %, au-dessus du seuil d'acceptation (${g.seuilAccept} %).`], regles:[], eliminatoire:false };
   if(s.total < g.seuilRejet)
-    return { statut:"rejete", motifs:[`Score de ${s.total} sous le seuil de rejet (${g.seuilRejet}).`], regles:["score"], eliminatoire:false };
-  return { statut:"revoir", motifs:[`Score de ${s.total} entre le seuil de rejet (${g.seuilRejet}) et le seuil d'acceptation (${g.seuilAccept}).`], regles:[], eliminatoire:false };
+    return { statut:"rejete", motifs:[`Score de ${s.total} %, sous le seuil de rejet (${g.seuilRejet} %).`], regles:["score"], eliminatoire:false };
+  return { statut:"revoir", motifs:[`Score de ${s.total} %, entre le seuil de rejet (${g.seuilRejet} %) et celui d'acceptation (${g.seuilAccept} %).`], regles:[], eliminatoire:false };
 }
 
 /* Vue calculée : chaque candidature porte son score et sa décision. */
@@ -1054,8 +1106,8 @@ function blocDecision(tous){
         </span>`).join("")}
     </div>
     <div class="seuils">
-      <span>Seuil d'acceptation : <span class="mono">${state.grille.seuilAccept}</span></span>
-      <span>Seuil de rejet : <span class="mono">${state.grille.seuilRejet}</span></span>
+      <span>Seuil d'acceptation : <span class="mono">${state.grille.seuilAccept} %</span></span>
+      <span>Seuil de rejet : <span class="mono">${state.grille.seuilRejet} %</span></span>
       <span>${elim} rejet${elim>1?"s":""} par règle éliminatoire</span>
       <span>${comps().filter(k=>k.obligatoire).length} compétence(s) obligatoire(s)</span>
     </div>`;
@@ -1078,14 +1130,14 @@ function renderTableau(){
       <span class="kpi-note">Bassin actif de ${actives.length} candidature(s)</span>
     </div>
     <div class="kpi">
-      <span class="eyebrow">Acceptés</span>
-      <span class="kpi-val" style="color:var(--good)">${acceptes}</span>
-      <span class="kpi-note">${tous.length?Math.round(acceptes/tous.length*100):0} % des CV reçus</span>
+      <span class="eyebrow">Taux d'acceptation</span>
+      <span class="kpi-val" style="color:var(--good)">${tous.length?Math.round(acceptes/tous.length*100):0}<small>%</small></span>
+      <span class="kpi-note">${acceptes} candidature(s) acceptée(s)</span>
     </div>
     <div class="kpi">
-      <span class="eyebrow">Rejetés</span>
-      <span class="kpi-val" style="color:var(--bad)">${rejetes}</span>
-      <span class="kpi-note">${tous.filter(c=>c.d.statut==="revoir").length} à revoir manuellement</span>
+      <span class="eyebrow">Taux de rejet</span>
+      <span class="kpi-val" style="color:var(--bad)">${tous.length?Math.round(rejetes/tous.length*100):0}<small>%</small></span>
+      <span class="kpi-note">${rejetes} rejeté(s), ${tous.filter(c=>c.d.statut==="revoir").length} à revoir</span>
     </div>`;
 
   el("decision-bloc").innerHTML = blocDecision(tous);
@@ -1162,7 +1214,7 @@ function trier(liste){
   const cle = c => ({
     score:c.s.total, nom:norm(state.anonyme?c.ref:c.nom), comp:c.s.obtenues.length,
     decision:rangStatut[c.d.statut], annees:c.annees,
-    formation:(FORMATIONS[c.formation]||FORMATIONS.aucune).rang,
+    formation:anneesFormationDe(c),
     lieu:norm(c.lieu), etape:ETAPES.findIndex(e=>e.id===c.etape), recu:c.recu
   })[champ];
   return [...liste].sort((a,b)=>{ const x=cle(a), y=cle(b); return x<y?-sens : x>y?sens : 0; });
@@ -1197,7 +1249,7 @@ function renderListe(){
       <td><span class="stamp ${st.cls}" data-tip="${esc(c.d.motifs[0]||"")}">${st.label}</span></td>
       <td class="num">${c.s.obtenues.length}<span style="color:var(--ink-3)">/${comps().length}</span></td>
       <td class="num">${c.annees} an${c.annees>1?"s":""}</td>
-      <td>${esc((FORMATIONS[c.formation]||FORMATIONS.aucune).label)}</td>
+      <td class="num">${anneesFormationDe(c)} ans</td>
       <td>${esc(c.lieu)}</td>
       <td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="color:${ETAPE[c.etape].couleur}"></span>${esc(ETAPE[c.etape].label)}</span></td>
       <td class="num" style="color:var(--ink-3)">${esc(depuisCourt(c.recu))}</td>
@@ -1295,9 +1347,9 @@ function renderDrawer(){
       <section class="block">
         <h4>Profil</h4>
         <dl class="kv">
-          <dt>Expérience</dt><dd>${c.annees} an${c.annees>1?"s":""} <span style="color:var(--ink-3);font-weight:400">(minimum ${state.grille.experienceMin}, plein pointage à ${state.grille.experienceCible})</span></dd>
-          <dt>Formation</dt><dd>${esc((FORMATIONS[c.formation]||FORMATIONS.aucune).label)}</dd>
-          <dt>Langues</dt><dd>${esc(liste2texte(c.langues))||"—"}</dd>
+          <dt>Expérience</dt><dd>${c.annees} an${c.annees>1?"s":""} <span style="color:var(--ink-3);font-weight:400">(min. ${state.grille.experienceMin}, 100 % à ${state.grille.experienceCible}${state.grille.experienceMax?", plafond "+state.grille.experienceMax:""})</span></dd>
+          <dt>Formation</dt><dd>${anneesFormationDe(c)} ans d'études <span style="color:var(--ink-3);font-weight:400">— ${esc(diplomeDe(c))} (min. ${state.grille.formationMin}, 100 % à ${state.grille.formationCible}${state.grille.formationMax?", plafond "+state.grille.formationMax:""})</span></dd>
+          <dt>Langues</dt><dd>${(c.langues||[]).length} <span style="color:var(--ink-3);font-weight:400">— ${esc(liste2texte(c.langues))||"aucune détectée"} (min. ${state.grille.languesMin}, 100 % à ${state.grille.languesCible})</span></dd>
           <dt>Lieu</dt><dd>${esc(c.lieu)}${state.grille.lieux.length?` <span style="color:var(--ink-3);font-weight:400">(${lieuAccepte(c)?"accepté":"hors liste"})</span>`:""}</dd>
           <dt>Source</dt><dd>${esc(c.source)}</dd>
           <dt>Reçu le</dt><dd>${esc(dateCourte(c.recu))} <span style="color:var(--ink-3);font-weight:400">(${esc(depuis(c.recu))})</span></dd>
@@ -1358,44 +1410,41 @@ function renderCriteres(){
   el("seuils").innerHTML = `
     <div class="seuil-row">
       <label for="s-accept">Seuil d'acceptation <span class="aide" style="color:var(--ink-3)">au-dessus, le CV est accepté</span></label>
-      <span class="mono" style="color:var(--good)">${g.seuilAccept}</span>
+      <span class="mono" style="color:var(--good)">${g.seuilAccept} %</span>
       <input id="s-accept" type="range" min="1" max="100" step="1" value="${g.seuilAccept}">
     </div>
     <div class="seuil-row">
       <label for="s-rejet">Seuil de rejet <span class="aide" style="color:var(--ink-3)">en dessous, le CV est rejeté</span></label>
-      <span class="mono" style="color:var(--bad)">${g.seuilRejet}</span>
+      <span class="mono" style="color:var(--bad)">${g.seuilRejet} %</span>
       <input id="s-rejet" type="range" min="0" max="99" step="1" value="${g.seuilRejet}">
     </div>`;
 
-  el("regles").innerHTML = REGLES.map(r=>`
-    <label class="regle">
+  el("regles").innerHTML = REGLES.map(r=>{
+    const inactive = /Max$/.test(r.id) && !bornes(g)[r.id];
+    return `<label class="regle">
       <input type="checkbox" data-regle="${r.id}" ${g.eliminatoires[r.id]?"checked":""}>
-      <span>${esc(r.titre)}<span class="desc">${esc(r.desc)}</span></span>
-    </label>`).join("");
+      <span>${esc(titreRegle(r,g))}<span class="desc">${esc(r.desc)}${inactive?" Plafond à 0 : la règle ne s'applique pas.":""}</span></span>
+    </label>`;
+  }).join("");
 
   const b = el("r-auto");
   b.setAttribute("aria-pressed", g.autoImport); b.textContent = g.autoImport ? "Oui" : "Non";
 
-  const champs = { "g-poste":g.poste, "g-exp-min":g.experienceMin, "g-exp-cible":g.experienceCible,
-                   "g-langues-ex":liste2texte(g.languesExigees), "g-langues-at":liste2texte(g.languesAtouts),
+  const champs = { "g-poste":g.poste,
+                   "g-exp-min":g.experienceMin,  "g-exp-cible":g.experienceCible,  "g-exp-max":g.experienceMax,
+                   "g-form-min":g.formationMin,  "g-form-cible":g.formationCible,  "g-form-max":g.formationMax,
+                   "g-lang-min":g.languesMin,    "g-lang-cible":g.languesCible,
                    "g-lieux":liste2texte(g.lieux) };
   Object.entries(champs).forEach(([id,v])=>{
     const n = el(id);
     if(document.activeElement !== n && String(n.value) !== String(v)) n.value = v;
   });
-  const sel = el("g-formation");
-  if(!sel.options.length){
-    sel.innerHTML = `<option value="">Aucune exigence</option>` +
-      Object.entries(FORMATIONS).filter(([k])=>k!=="aucune")
-        .map(([k,f])=>`<option value="${k}">${esc(f.label)}</option>`).join("");
-  }
-  if(document.activeElement !== sel) sel.value = g.formationMin;
 
   /* Aperçu de l'effet des réglages sur le bassin réel. */
   const tous = notes(), n = tous.length || 1;
   const par = { accepte:0, revoir:0, rejete:0 };
   const causes = {};
-  const NOM_REGLE = Object.fromEntries(REGLES.map(r=>[r.id, r.titre]));
+  const NOM_REGLE = Object.fromEntries(REGLES.map(r=>[r.id, titreRegle(r, state.grille)]));
   NOM_REGLE.score = "Score sous le seuil de rejet";
   tous.forEach(c=>{
     par[c.d.statut]++;
@@ -1593,11 +1642,15 @@ el("regles").addEventListener("change", e=>{
 el("r-auto").addEventListener("click", ()=>{ state.grille.autoImport = !state.grille.autoImport; render(); });
 
 el("g-poste").addEventListener("input", e=>{ state.grille.poste = e.target.value; render(); });
-el("g-exp-min").addEventListener("input", e=>{ state.grille.experienceMin = Math.max(0, +e.target.value||0); render(); });
-el("g-exp-cible").addEventListener("input", e=>{ state.grille.experienceCible = Math.max(1, +e.target.value||1); render(); });
-el("g-formation").addEventListener("change", e=>{ state.grille.formationMin = e.target.value; render(); });
-el("g-langues-ex").addEventListener("input", e=>{ state.grille.languesExigees = texte2liste(e.target.value); render(); });
-el("g-langues-at").addEventListener("input", e=>{ state.grille.languesAtouts = texte2liste(e.target.value); render(); });
+[["g-exp-min","experienceMin",0], ["g-exp-cible","experienceCible",1], ["g-exp-max","experienceMax",0],
+ ["g-form-min","formationMin",0],  ["g-form-cible","formationCible",1], ["g-form-max","formationMax",0],
+ ["g-lang-min","languesMin",0],    ["g-lang-cible","languesCible",1]
+].forEach(([id, cle, plancher])=>{
+  el(id).addEventListener("input", e=>{
+    state.grille[cle] = Math.max(plancher, Math.round(+e.target.value) || plancher);
+    render();
+  });
+});
 el("g-lieux").addEventListener("input", e=>{ state.grille.lieux = texte2liste(e.target.value); render(); });
 
 /* Pipeline : glisser-déposer */
@@ -1743,9 +1796,14 @@ function analyser(texte, nomFichier){
   let formation = "aucune";
   if(/doctorat|ph\.?\s?d|these de doctorat/.test(n)) formation = "doctorat";
   else if(/maitrise|master|m\.?\s?sc|mba/.test(n)) formation = "maitrise";
-  else if(/licence|baccalaureat|\bbac\b|bachelor|b\.?\s?a\b/.test(n)) formation = "bac";
+  else if(/licence|baccalaureat|bachelor|b\.?\s?a\b/.test(n)) formation = "bac";
   else if(/certificat/.test(n)) formation = "certificat";
   else if(/\bbts\b|\bdut\b|\bdec\b|technique|collegial/.test(n)) formation = "dec";
+
+  /* « bac+5 » ou « 5 ans d'études » l'emportent sur le diplôme deviné. */
+  let anneesFormation = FORMATIONS[formation].annees;
+  const bacPlus = n.match(/bac\s*\+\s*(\d{1,2})/) || n.match(/(\d{1,2})\s*(?:ans?|annees?)\s+d[e']\s*etudes/);
+  if(bacPlus) anneesFormation = Math.min(15, +bacPlus[1]);
 
   const g = state.grille;
   let lieu = g.lieux.find(v=>norm(v) && n.includes(norm(v)))
@@ -1755,8 +1813,7 @@ function analyser(texte, nomFichier){
     lieu = ligneLieu ? ligneLieu.split(":").slice(1).join(":").trim() : "Non précisé";
   }
 
-  const candidates = LANGUES_COURANTES.concat(g.languesExigees, g.languesAtouts);
-  const langues = [...new Set(candidates.filter(l=>n.includes(norm(l))))];
+  const langues = [...new Set(LANGUES_COURANTES.filter(l=>n.includes(norm(l))))];
   if(!langues.length) langues.push("Français");
 
   const competences = comps().filter(k=>(k.kw||[]).some(kw=>norm(kw) && n.includes(norm(kw)))).map(k=>k.id);
@@ -1766,7 +1823,7 @@ function analyser(texte, nomFichier){
   return {
     id:"i"+Date.now()+"-"+state.seq, ref:"C-"+String(state.seq).padStart(3,"0"),
     prenom:mots[0]||"Candidature", nom:mots.slice(1).join(" ")||"déposée",
-    titre, lieu, courriel, tel, annees, formation, langues, competences,
+    titre, lieu, courriel, tel, annees, formation, anneesFormation, langues, competences,
     source:"Dépôt" + (nomFichier?" · "+nomFichier:" · texte collé"), recu:Date.now(),
     etape:"nouveau", favori:false, note:0, commentaire:"", resume:brut.slice(0,1200)
   };
@@ -1872,20 +1929,20 @@ function construireExport(){
       ref:c.ref, nom:state.anonyme?null:c.prenom+" "+c.nom, titre:c.titre, lieu:c.lieu,
       score:c.s.total, decision:STATUTS[c.d.statut].label, motif:c.d.motifs[0]||"",
       competences:c.s.obtenues.map(id=>(comp(id)||{}).court),
-      annees:c.annees, formation:(FORMATIONS[c.formation]||FORMATIONS.aucune).label,
-      langues:c.langues, etape:ETAPE[c.etape].label,
+      annees:c.annees, anneesFormation:anneesFormationDe(c), diplome:diplomeDe(c),
+      langues:c.langues, nbLangues:(c.langues||[]).length, etape:ETAPE[c.etape].label,
       recu:new Date(c.recu).toISOString().slice(0,10), source:c.source,
       courriel:state.anonyme?null:c.courriel, note:c.note
     })), null, 2);
     return;
   }
-  const entetes = ["Réf","Nom","Titre","Lieu","Score","Décision","Motif","Compétences","Expérience","Formation","Langues","Étape","Reçu","Source","Courriel","Note"];
+  const entetes = ["Réf","Nom","Titre","Lieu","Score %","Décision","Motif","Compétences","Années d'expérience","Années de formation","Diplôme","Nombre de langues","Langues","Étape","Reçu","Source","Courriel","Note"];
   const cell = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
   const lignes = donnees.map(c=>[
     c.ref, state.anonyme?"(anonymisé)":c.prenom+" "+c.nom, c.titre, c.lieu, c.s.total,
     STATUTS[c.d.statut].label, c.d.motifs[0]||"",
     c.s.obtenues.map(id=>(comp(id)||{}).court).join(", "), c.annees,
-    (FORMATIONS[c.formation]||FORMATIONS.aucune).label, liste2texte(c.langues),
+    anneesFormationDe(c), diplomeDe(c), (c.langues||[]).length, liste2texte(c.langues),
     ETAPE[c.etape].label, new Date(c.recu).toISOString().slice(0,10), c.source,
     state.anonyme?"(anonymisé)":c.courriel, c.note
   ].map(cell).join(";"));

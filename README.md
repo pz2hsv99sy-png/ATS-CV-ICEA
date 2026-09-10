@@ -27,21 +27,33 @@ poids et le contenu.
 |---|---|---|
 | Compétences exigées | 45 % | somme des poids des compétences détectées ÷ somme des poids de la grille |
 | Années d'expérience | 25 % | années ÷ « plein pointage à », plafonné à 100 % |
-| Formation | 15 % | doctorat 100 %, master 95 %, licence 75 %, certificat 50 %, diplôme technique 40 % |
-| Langues | 10 % | 75 % pour les langues exigées, 25 % pour les langues valorisées |
+| Années de formation | 15 % | années d'études ÷ « 100 % à », plafonné à 100 % |
+| Nombre de langues | 10 % | langues détectées ÷ « 100 % à », plafonné à 100 % |
 | Lieu de travail | 5 % | 100 % si le lieu figure dans votre liste, 20 % sinon ; liste vide = critère neutre |
 
-Le score passe ensuite par deux seuils que vous réglez : au-dessus du **seuil
+Les trois critères chiffrés — expérience, années de formation, nombre de langues — se
+règlent de la même façon : un **minimum**, une **cible** qui vaut 100 %, et pour les deux
+premiers un **plafond** facultatif (0 = aucun). Le diplôme reste affiché, mais c'est le
+nombre d'années d'études qui note : certificat 1, technique 2, licence 3, master 5,
+doctorat 8 — et un CV qui écrit « bac+4 » vaut 4.
+
+Le score passe ensuite par deux seuils exprimés en pourcentage : au-dessus du **seuil
 d'acceptation**, le CV est accepté ; sous le **seuil de rejet**, il est rejeté ; entre les
 deux, il est mis à revoir.
 
-Quatre **règles éliminatoires**, activables une par une, passent avant le score — une
-seule suffit à rejeter un CV :
+Sept **règles éliminatoires**, activables une par une, passent avant le score — une seule
+suffit à rejeter un CV :
 
-- expérience sous le minimum exigé ;
+- moins de X années d'expérience ;
+- plus de X années d'expérience (surqualification) ;
+- moins de X années de formation ;
+- plus de X années de formation ;
+- moins de X langues ;
 - compétence marquée « obligatoire » absente du CV ;
-- formation sous le niveau minimal ;
 - lieu hors de la liste acceptée.
+
+Chaque règle affiche le nombre en vigueur dans son libellé, et le tableau de bord donne
+les **taux d'acceptation et de rejet** en pourcentage.
 
 La décision est recalculée en direct : déplacez un curseur de pondération ou cochez une
 règle, et tous les tampons changent immédiatement. La fiche candidat indique toujours le
