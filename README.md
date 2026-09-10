@@ -102,10 +102,19 @@ Le nom du dépôt ne prend que des traits d'union. Un tiret bas donne
 `ERR_PNPM_GIT_RESOLVE_FAILED` : GitHub ne trouve pas le dépôt et pnpm croit alors qu'il
 est privé.
 
-**Attention au cache.** `pnpm dlx` réutilise ce qu'il a téléchargé pendant 24 h : relancé
-après une mise à jour du dépôt, il ressert l'ancienne version sans le dire. La version
-s'affiche au démarrage (`Présélection des CV v1.1.0`) ; si elle ne bouge pas, forcez le
-rafraîchissement :
+**Le cache de pnpm ne peut plus vous servir du périmé.** `pnpm dlx` réutilise pendant 24 h
+ce qu'il a téléchargé ; la commande contourne le problème en allant chercher `index.html`
+sur la branche `main` à chaque démarrage. Elle annonce ce qu'elle sert :
+
+```
+Présélection des CV — application v1.2.0 · dernière version en ligne
+```
+
+Si GitHub est injoignable, elle sert la copie du paquet et le dit. `--offline` saute la
+requête et sert cette copie directement.
+
+Une seule fois, si votre cache contient encore une version antérieure à 1.2.0, forcez le
+rafraîchissement du paquet lui-même — ensuite la mise à jour est automatique :
 
 ```sh
 pnpm --config.dlxCacheMaxAge=0 dlx github:pz2hsv99sy-png/ATS-CV-ICEA
