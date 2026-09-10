@@ -29,7 +29,7 @@
   --grid:#E9E7E0;
   --shadow:none;
   --shadow-lift:0 20px 44px -20px rgba(22,23,28,.30);
-  --radius:8px;
+  --radius:12px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -68,7 +68,7 @@
 [hidden]{display:none !important}
 body{
   margin:0; background:var(--ground); color:var(--ink);
-  font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  font-family:var(--sans); font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
 }
 h1,h2,h3,h4{font-family:var(--sans); margin:0; letter-spacing:-.015em; text-wrap:balance}
 button,input,select,textarea{font:inherit; color:inherit}
@@ -113,8 +113,46 @@ button,input,select,textarea{font:inherit; color:inherit}
 .dot{width:7px; height:7px; border-radius:50%; background:currentColor; flex:none}
 
 /* ---------------- Charpente ---------------- */
-.workspace{display:grid; grid-template-columns:300px minmax(0,1fr); gap:18px; padding:18px 22px 44px; align-items:start}
-.rail{display:flex; flex-direction:column; gap:14px; position:sticky; top:78px}
+.page{max-width:1180px; margin:0 auto; padding:26px 22px 56px; display:flex; flex-direction:column; gap:18px}
+.reglages{max-width:840px; display:flex; flex-direction:column; gap:18px}
+
+/* Barre de filtres : une seule ligne, le reste se déplie */
+.filterbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px;
+}
+.filterbar .grow{flex:1 1 220px; min-width:180px}
+.filterbar .input{background:var(--surface-2)}
+.filterbar-plus{display:none; width:100%; gap:14px; flex-wrap:wrap; align-items:center;
+  border-top:1px solid var(--line); margin-top:4px; padding-top:12px}
+.filterbar-plus.ouvert{display:flex}
+.filtre-groupe{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--ink-2)}
+
+/* Bandeau d'ouverture du tableau de bord */
+.hero{display:flex; flex-direction:column; gap:16px}
+.hero-line{margin:0; font-size:27px; font-weight:600; letter-spacing:-.02em; line-height:1.25; text-wrap:balance}
+.hero-line b{font-weight:600; color:var(--accent)}
+.hero-foot{display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--ink-3)}
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:18px}
+.stat{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px}
+.stat-val{display:block; font-size:26px; font-weight:600; letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1.2}
+.stat-lab{display:block; font-size:13px; color:var(--ink-3)}
+
+/* Réglages dépliables */
+details.pli{border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+details.pli > summary{
+  cursor:pointer; padding:16px 22px; font-size:15px; font-weight:600; list-style:none;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+details.pli > summary::-webkit-details-marker{display:none}
+details.pli > summary::after{content:"Afficher"; font-size:13px; font-weight:400; color:var(--ink-3)}
+details.pli[open] > summary::after{content:"Masquer"}
+details.pli > summary:hover{background:var(--surface-2); border-radius:var(--radius)}
+.pli-corps{padding:0 22px 22px}
+
+/* Les trois zones de décision, sur une seule échelle */
+.zone{display:flex; height:34px; border-radius:8px; overflow:hidden; gap:2px; margin:4px 0 14px}
+.zone span{display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:#FBFAF8; min-width:0; overflow:hidden; white-space:nowrap}
 .panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px}
 .panel-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:12px}
 
@@ -170,9 +208,9 @@ button,input,select,textarea{font:inherit; color:inherit}
 
 /* ---------------- Graphiques ---------------- */
 .charts{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:14px; margin-top:14px}
-.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px 17px 13px}
-.card h3{font-size:13.5px; font-weight:600}
-.card-sub{font-size:11.5px; color:var(--ink-3); margin:3px 0 13px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px}
+.card h3{font-size:17px; font-weight:600}
+.card-sub{font-size:13.5px; color:var(--ink-3); margin:4px 0 18px; max-width:64ch}
 .legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:11px; font-size:11.5px; color:var(--ink-2)}
 .legend span{display:inline-flex; align-items:center; gap:5px}
 .legend i{width:9px; height:9px; border-radius:2.5px; display:inline-block}
@@ -233,7 +271,7 @@ svg text{font-family:var(--sans); font-variant-numeric:tabular-nums}
 
 /* ---------------- Liste ---------------- */
 .table-wrap{overflow-x:auto; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius)}
-table{border-collapse:collapse; width:100%; min-width:900px}
+table{border-collapse:collapse; width:100%; min-width:680px}
 th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:middle}
 thead th{
   position:sticky; top:0; background:var(--surface-2); z-index:2;
@@ -331,9 +369,7 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
 .empty{padding:44px 20px; text-align:center; color:var(--ink-3); font-size:13px}
 
 @media (max-width:1140px){
-  .workspace{grid-template-columns:minmax(0,1fr)}
-  .workspace main{order:-1}
-  .rail{position:static; display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); align-items:start}
+  .stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
   .charts, .grille{grid-template-columns:minmax(0,1fr)}
   .col{max-height:none}
 }
@@ -344,7 +380,8 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
 }
 @media (max-width:640px){
   .topbar{gap:12px; padding:10px 16px}
-  .workspace{padding:16px 16px 36px}
+  .page{padding:18px 16px 40px; gap:14px}
+  .hero-line{font-size:22px}
   .kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kpi:nth-child(3){border-left:0}
   .kpi:nth-child(n+3){border-top:1px solid var(--line)}
@@ -380,201 +417,178 @@ textarea.input{resize:vertical; min-height:66px; font-size:12.5px}
   </div>
 </header>
 
-<div class="workspace">
-  <aside class="rail">
-    <section class="panel" aria-labelledby="h-poids">
-      <div class="panel-head">
-        <h2 class="eyebrow" id="h-poids">Pondérations</h2>
-        <button class="btn btn-quiet btn-sm" id="btn-poids-reset">Réinitialiser</button>
-      </div>
-      <div id="criteres"></div>
-      <p class="note-fine">Total : <span class="mono" id="poids-total">100</span>&nbsp;%. Chaque déplacement recalcule les scores et les décisions.</p>
-    </section>
+<main class="page">
 
-    <section class="panel" aria-labelledby="h-filtres">
-      <div class="panel-head">
-        <h2 class="eyebrow" id="h-filtres">Filtres</h2>
-        <button class="btn btn-quiet btn-sm" id="btn-filtres-reset">Effacer</button>
-      </div>
-      <div class="field">
-        <label for="f-q">Recherche</label>
-        <input class="input" id="f-q" type="search" placeholder="Nom, lieu, compétence…" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="f-score">Score minimal : <span class="mono" id="f-score-val">0</span></label>
-        <input id="f-score" type="range" min="0" max="100" step="5" value="0" style="accent-color:var(--accent); width:100%">
-      </div>
-      <div class="field">
-        <label id="lab-decision">Décision</label>
-        <div class="chips" id="f-decision" role="group" aria-labelledby="lab-decision"></div>
-      </div>
-      <div class="field">
-        <label id="lab-comp">Doit posséder</label>
-        <div class="chips" id="f-competences" role="group" aria-labelledby="lab-comp"></div>
-      </div>
-      <div class="switch-row">
-        <span>Favoris seulement</span>
-        <button class="btn btn-sm" id="f-favori" aria-pressed="false">Non</button>
-      </div>
-      <div class="switch-row">
-        <span>Inclure les écartés</span>
-        <button class="btn btn-sm" id="f-ecartes" aria-pressed="false">Non</button>
-      </div>
-    </section>
+  <!-- Barre de filtres, seulement là où l'on parcourt des candidatures -->
+  <div class="filterbar" id="filtres" hidden>
+    <label class="sr" for="f-q">Recherche</label>
+    <input class="input grow" id="f-q" type="search" placeholder="Rechercher un nom, un lieu, une compétence…" autocomplete="off">
+    <div class="chips" id="f-decision" role="group" aria-label="Filtrer par décision"></div>
+    <button class="btn btn-sm" id="btn-plus">Plus de filtres</button>
+    <button class="btn btn-sm btn-quiet" id="btn-filtres-reset">Effacer</button>
+    <div class="filterbar-plus" id="filtres-plus">
+      <span class="filtre-groupe">
+        <label for="f-score">Score minimal</label>
+        <input id="f-score" type="range" min="0" max="100" step="5" value="0" style="accent-color:var(--accent); width:120px">
+        <span class="mono" id="f-score-val">0</span> %
+      </span>
+      <span class="filtre-groupe">
+        <button class="btn btn-sm" id="f-favori" aria-pressed="false">Favoris seulement</button>
+        <button class="btn btn-sm" id="f-ecartes" aria-pressed="false">Inclure les écartés</button>
+      </span>
+      <span class="filtre-groupe" style="flex:1 1 100%">
+        <span>Doit posséder</span>
+        <span class="chips" id="f-competences" role="group" aria-label="Compétences exigées du candidat"></span>
+      </span>
+    </div>
+  </div>
 
-    <section class="panel">
-      <div class="panel-head"><h2 class="eyebrow">Dossier</h2></div>
-      <p class="note-fine" style="margin-top:0">Tout reste dans ce navigateur. Aucun CV n'est téléversé.</p>
-      <div style="display:flex; gap:8px; margin-top:11px; flex-wrap:wrap">
-        <button class="btn btn-sm" id="btn-demo">Recharger la démo</button>
-        <button class="btn btn-sm btn-danger" id="btn-vider">Tout effacer</button>
+  <!-- ---------------- Tableau de bord ---------------- -->
+  <section id="view-tableau" role="tabpanel" aria-labelledby="tab-tableau">
+    <div class="card hero" id="decision-bloc"></div>
+    <div class="stats" id="kpis" style="margin-top:18px"></div>
+
+    <div class="charts">
+      <div class="card">
+        <h3>Où en sont les candidatures</h3>
+        <p class="card-sub">Le nombre de dossiers à chaque étape du processus.</p>
+        <div id="chart-funnel"></div>
       </div>
-    </section>
-  </aside>
+      <div class="card">
+        <h3>Comment les scores se répartissent</h3>
+        <p class="card-sub">Chaque barre est une tranche de score. Les traits marquent vos deux seuils.</p>
+        <div id="chart-hist"></div>
+      </div>
+      <div class="card" style="grid-column:1/-1">
+        <h3>Quelles compétences sont couvertes</h3>
+        <p class="card-sub">Part des candidatures encore en lice qui démontrent chaque compétence de votre grille.</p>
+        <div id="chart-skills"></div>
+      </div>
+    </div>
+  </section>
 
-  <main>
-    <!-- ---------------- Tableau de bord ---------------- -->
-    <section id="view-tableau" role="tabpanel" aria-labelledby="tab-tableau">
-      <div class="kpi-strip" id="kpis"></div>
+  <!-- ---------------- Pipeline ---------------- -->
+  <section id="view-pipeline" role="tabpanel" aria-labelledby="tab-pipeline" hidden>
+    <div class="list-head">
+      <p class="card-sub" style="margin:0">Glissez une fiche d'une colonne à l'autre pour faire avancer la candidature.</p>
+      <span class="card-sub" style="margin:0" id="pipeline-count"></span>
+    </div>
+    <div class="kanban" id="kanban"></div>
+  </section>
 
-      <div class="card" style="margin-top:14px">
-        <div class="list-head" style="margin-bottom:11px">
-          <div>
-            <h3>Décision de l'algorithme</h3>
-            <p class="card-sub" style="margin:3px 0 0">Verdict recalculé en direct à partir de votre grille et de vos seuils.</p>
-          </div>
-          <button class="btn btn-sm" id="btn-appliquer">Classer selon la décision</button>
+  <!-- ---------------- Liste ---------------- -->
+  <section id="view-liste" role="tabpanel" aria-labelledby="tab-liste" hidden>
+    <div id="bulk-bar"></div>
+    <div class="list-head">
+      <span class="card-sub" style="margin:0" id="liste-count"></span>
+      <span class="card-sub" style="margin:0">Cliquez sur une ligne pour ouvrir la fiche.</span>
+    </div>
+    <div class="table-wrap">
+      <table id="table">
+        <thead><tr id="thead-row"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ---------------- Critères ---------------- -->
+  <section id="view-criteres" role="tabpanel" aria-labelledby="tab-criteres" hidden>
+    <div class="reglages">
+
+      <div class="card">
+        <h3>Ce que vous cherchez</h3>
+        <p class="card-sub">Trois nombres suffisent pour démarrer. Tout se recalcule pendant que vous tapez.</p>
+        <div class="field">
+          <label for="g-poste">Intitulé du poste</label>
+          <input class="input" id="g-poste" type="text">
         </div>
-        <div id="decision-bloc"></div>
-      </div>
-
-      <div class="charts">
-        <div class="card">
-          <h3>Entonnoir de sélection</h3>
-          <p class="card-sub">Candidatures par étape, du CV reçu à l'offre.</p>
-          <div id="chart-funnel"></div>
+        <div class="trio">
+          <div class="field"><label for="g-exp-min">Années d'expérience <span class="aide">au minimum</span></label>
+            <input class="input" id="g-exp-min" type="number" min="0" max="50" step="1"></div>
+          <div class="field"><label for="g-form-min">Années d'études <span class="aide">au minimum</span></label>
+            <input class="input" id="g-form-min" type="number" min="0" max="15" step="1"></div>
+          <div class="field"><label for="g-lang-min">Langues <span class="aide">au minimum</span></label>
+            <input class="input" id="g-lang-min" type="number" min="0" max="9" step="1"></div>
         </div>
-        <div class="card">
-          <h3>Distribution des scores</h3>
-          <p class="card-sub">Nombre de candidatures par tranche de score.</p>
-          <div id="chart-hist"></div>
-        </div>
-        <div class="card" style="grid-column:1/-1">
-          <h3>Couverture des compétences exigées</h3>
-          <p class="card-sub">Part des candidatures actives qui démontrent chaque compétence de la grille.</p>
-          <div id="chart-skills"></div>
+        <div class="field" style="margin:6px 0 0">
+          <label for="g-lieux">Lieux acceptés <span class="aide">vide = pas de filtre sur le lieu</span></label>
+          <input class="input" id="g-lieux" type="text" placeholder="Ex. : Lyon, Bruxelles, à distance">
         </div>
       </div>
-    </section>
 
-    <!-- ---------------- Pipeline ---------------- -->
-    <section id="view-pipeline" role="tabpanel" aria-labelledby="tab-pipeline" hidden>
-      <div class="list-head">
-        <p class="card-sub" style="margin:0">Glissez une fiche d'une colonne à l'autre pour faire avancer la candidature.</p>
-        <span class="eyebrow" id="pipeline-count"></span>
+      <div class="card">
+        <h3>Les compétences qui comptent</h3>
+        <p class="card-sub">Le poids fixe l'importance. Les mots-clés sont ce que l'on cherche dans le texte du CV.
+          Une compétence « obligatoire » qui manque fait rejeter le CV.</p>
+        <div class="comp-head">
+          <span>Compétence</span><span>Poids</span><span>Mots-clés cherchés dans le CV</span><span></span><span></span>
+        </div>
+        <div id="comp-editeur"></div>
+        <button class="btn btn-sm" id="btn-comp-ajouter" style="margin-top:14px">+ Ajouter une compétence</button>
       </div>
-      <div class="kanban" id="kanban"></div>
-    </section>
 
-    <!-- ---------------- Liste ---------------- -->
-    <section id="view-liste" role="tabpanel" aria-labelledby="tab-liste" hidden>
-      <div id="bulk-bar"></div>
-      <div class="list-head">
-        <span class="eyebrow" id="liste-count"></span>
-        <span class="card-sub" style="margin:0">Cliquez sur une ligne pour ouvrir la fiche.</span>
+      <div class="card">
+        <h3>Où passe la limite</h3>
+        <p class="card-sub">Chaque CV reçoit un score sur 100. Vous décidez à partir de quel score il passe.</p>
+        <div id="seuils"></div>
       </div>
-      <div class="table-wrap">
-        <table id="table">
-          <thead><tr id="thead-row"></tr></thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-    </section>
 
-    <!-- ---------------- Critères ---------------- -->
-    <section id="view-criteres" role="tabpanel" aria-labelledby="tab-criteres" hidden>
-      <div class="grille">
-        <div style="display:flex; flex-direction:column; gap:14px">
-          <div class="card">
-            <h3>Compétences exigées</h3>
-            <p class="card-sub">Le poids fixe l'importance relative. Les mots-clés, séparés par des virgules, sont ceux
-              cherchés dans le texte du CV. Une compétence obligatoire non trouvée entraîne un rejet si la règle
-              correspondante est active.</p>
-            <div class="comp-head">
-              <span>Compétence</span><span>Poids</span><span>Mots-clés cherchés dans le CV</span><span>Obligatoire</span><span></span>
-            </div>
-            <div id="comp-editeur"></div>
-            <button class="btn btn-sm" id="btn-comp-ajouter" style="margin-top:12px">+ Ajouter une compétence</button>
-          </div>
-
-          <div class="card">
-            <h3>Décision automatique</h3>
-            <p class="card-sub">Deux seuils partagent les candidatures en trois. Les règles éliminatoires passent avant
-              le score : une seule suffit à rejeter un CV.</p>
-            <div id="seuils"></div>
-            <h4 class="eyebrow" style="margin:16px 0 8px">Règles éliminatoires</h4>
-            <div id="regles"></div>
-            <div class="switch-row" style="border-top:1px solid var(--line); margin-top:10px; padding-top:12px">
-              <span>Classer automatiquement les CV déposés<span class="aide" style="display:block; color:var(--ink-3); font-size:11px">Accepté&nbsp;→ présélection, rejeté&nbsp;→ écartés.</span></span>
-              <button class="btn btn-sm" id="r-auto" aria-pressed="true">Oui</button>
-            </div>
+      <details class="pli" id="pli-refus">
+        <summary>Rejeter automatiquement dans d'autres cas</summary>
+        <div class="pli-corps">
+          <p class="card-sub" style="margin-top:0">Ces règles passent avant le score : une seule suffit à rejeter un CV.</p>
+          <div id="regles"></div>
+          <div class="switch-row" style="border-top:1px solid var(--line); margin-top:12px; padding-top:14px">
+            <span>Classer les CV déposés tout seul
+              <span class="aide" style="display:block; color:var(--ink-3)">Accepté → présélection, rejeté → écartés.</span></span>
+            <button class="btn btn-sm" id="r-auto" aria-pressed="true">Oui</button>
           </div>
         </div>
+      </details>
 
-        <div style="display:flex; flex-direction:column; gap:14px">
-          <div class="card">
-            <h3>Le poste</h3>
-            <p class="card-sub">Chaque critère chiffré a un minimum, une cible qui vaut 100 %, et un
-              plafond facultatif. Les règles éliminatoires s'appuient sur ces nombres.</p>
-            <div class="field">
-              <label for="g-poste">Intitulé</label>
-              <input class="input" id="g-poste" type="text">
-            </div>
-
-            <h4 class="eyebrow" style="margin:18px 0 9px">Années d'expérience</h4>
-            <div class="trio">
-              <div class="field"><label for="g-exp-min">Minimum</label>
-                <input class="input" id="g-exp-min" type="number" min="0" max="50" step="1"></div>
-              <div class="field"><label for="g-exp-cible">100 % à</label>
-                <input class="input" id="g-exp-cible" type="number" min="1" max="50" step="1"></div>
-              <div class="field"><label for="g-exp-max">Plafond <span class="aide">0 = aucun</span></label>
-                <input class="input" id="g-exp-max" type="number" min="0" max="50" step="1"></div>
-            </div>
-
-            <h4 class="eyebrow" style="margin:14px 0 9px">Années de formation <span class="aide" style="text-transform:none; letter-spacing:0">après le secondaire</span></h4>
-            <div class="trio">
-              <div class="field"><label for="g-form-min">Minimum</label>
-                <input class="input" id="g-form-min" type="number" min="0" max="15" step="1"></div>
-              <div class="field"><label for="g-form-cible">100 % à</label>
-                <input class="input" id="g-form-cible" type="number" min="1" max="15" step="1"></div>
-              <div class="field"><label for="g-form-max">Plafond <span class="aide">0 = aucun</span></label>
-                <input class="input" id="g-form-max" type="number" min="0" max="15" step="1"></div>
-            </div>
-
-            <h4 class="eyebrow" style="margin:14px 0 9px">Nombre de langues</h4>
-            <div class="pair">
-              <div class="field"><label for="g-lang-min">Minimum</label>
-                <input class="input" id="g-lang-min" type="number" min="0" max="9" step="1"></div>
-              <div class="field"><label for="g-lang-cible">100 % à</label>
-                <input class="input" id="g-lang-cible" type="number" min="1" max="9" step="1"></div>
-            </div>
-
-            <div class="field" style="margin:14px 0 0">
-              <label for="g-lieux">Lieux acceptés <span class="aide">villes, régions, pays ou « à distance » — vide = pas de filtre</span></label>
-              <input class="input" id="g-lieux" type="text" placeholder="Ex. : Lyon, Bruxelles, à distance">
-            </div>
+      <details class="pli" id="pli-poids">
+        <summary>Régler le calcul du score</summary>
+        <div class="pli-corps">
+          <p class="card-sub" style="margin-top:0">L'importance de chaque critère dans la note finale.
+            Total : <span class="mono" id="poids-total">100</span>&nbsp;%.</p>
+          <div id="criteres"></div>
+          <div class="trio" style="margin-top:18px">
+            <div class="field"><label for="g-exp-cible">Expérience à 100 %</label>
+              <input class="input" id="g-exp-cible" type="number" min="1" max="50" step="1"></div>
+            <div class="field"><label for="g-form-cible">Études à 100 %</label>
+              <input class="input" id="g-form-cible" type="number" min="1" max="15" step="1"></div>
+            <div class="field"><label for="g-lang-cible">Langues à 100 %</label>
+              <input class="input" id="g-lang-cible" type="number" min="1" max="9" step="1"></div>
           </div>
+          <div class="pair" style="margin-top:6px">
+            <div class="field"><label for="g-exp-max">Trop d'expérience au-delà de <span class="aide">0 = aucun plafond</span></label>
+              <input class="input" id="g-exp-max" type="number" min="0" max="50" step="1"></div>
+            <div class="field"><label for="g-form-max">Trop d'études au-delà de <span class="aide">0 = aucun plafond</span></label>
+              <input class="input" id="g-form-max" type="number" min="0" max="15" step="1"></div>
+          </div>
+          <button class="btn btn-sm" id="btn-poids-reset" style="margin-top:6px">Revenir aux valeurs par défaut</button>
+        </div>
+      </details>
 
-          <div class="card">
-            <h3>Effet de la grille</h3>
-            <p class="card-sub">Ce que vos réglages donnent sur le bassin actuel.</p>
-            <div id="apercu"></div>
+      <div class="card">
+        <h3>Ce que ça donne</h3>
+        <p class="card-sub">L'effet de vos réglages sur les candidatures déjà au dossier.</p>
+        <div id="apercu"></div>
+      </div>
+
+      <details class="pli">
+        <summary>Le dossier</summary>
+        <div class="pli-corps">
+          <p class="card-sub" style="margin-top:0">Tout reste dans ce navigateur. Aucun CV n'est téléversé.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn btn-sm" id="btn-demo">Recharger la démonstration</button>
+            <button class="btn btn-sm btn-danger" id="btn-vider">Tout effacer</button>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-</div>
+      </details>
+    </div>
+  </section>
+</main>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-nom" hidden></aside>
@@ -1085,31 +1099,27 @@ function chartSkills(actives){
    ===================================================================== */
 function blocDecision(tous){
   const n = tous.length;
+  if(!n) return `<p class="empty" style="padding:26px">Aucune candidature au dossier. Déposez des CV pour voir la décision.</p>`;
   const par = { accepte:[], revoir:[], rejete:[] };
   tous.forEach(c=>par[c.d.statut].push(c));
   const elim = par.rejete.filter(c=>c.d.eliminatoire).length;
-  if(!n) return `<p class="empty" style="padding:22px">Aucune candidature au dossier.</p>`;
-
   const barre = ["accepte","revoir","rejete"].map(k=>{
     const q = par[k].length;
-    return q ? `<span style="width:${q/n*100}%;background:${STATUTS[k].couleur}" data-tip="${STATUTS[k].label} · ${q} candidature${q>1?"s":""} sur ${n}"></span>` : "";
+    return q ? `<span style="width:${q/n*100}%;background:${STATUTS[k].couleur}" data-tip="${STATUTS[k].label} · ${q} sur ${n}"></span>` : "";
   }).join("");
 
   return `
+    <p class="hero-line"><b>${par.accepte.length} CV sur ${n}</b> correspondent au poste.
+      ${par.revoir.length} sont à revoir, ${par.rejete.length} sont rejetés.</p>
     <div class="decision-bar">${barre}</div>
     <div class="decision-legend">
       ${["accepte","revoir","rejete"].map(k=>`
-        <span style="display:inline-flex;align-items:center;gap:7px">
-          <i style="width:10px;height:10px;border-radius:3px;background:${STATUTS[k].couleur};display:inline-block"></i>
-          <b>${par[k].length}</b> ${STATUTS[k].label.toLowerCase()}
-          <span style="color:var(--ink-3)">${Math.round(par[k].length/n*100)} %</span>
-        </span>`).join("")}
+        <span><i style="background:${STATUTS[k].couleur}"></i><b>${par[k].length}</b> ${STATUTS[k].label.toLowerCase()}
+        <span style="color:var(--ink-3)">${Math.round(par[k].length/n*100)} %</span></span>`).join("")}
     </div>
-    <div class="seuils">
-      <span>Seuil d'acceptation : <span class="mono">${state.grille.seuilAccept} %</span></span>
-      <span>Seuil de rejet : <span class="mono">${state.grille.seuilRejet} %</span></span>
-      <span>${elim} rejet${elim>1?"s":""} par règle éliminatoire</span>
-      <span>${comps().filter(k=>k.obligatoire).length} compétence(s) obligatoire(s)</span>
+    <div class="hero-foot">
+      <button class="btn" id="btn-appliquer">Classer selon la décision</button>
+      <span>Accepté au-dessus de ${state.grille.seuilAccept} %, rejeté sous ${state.grille.seuilRejet} %${elim?` · ${elim} rejet${elim>1?"s":""} par une règle`:""}.</span>
     </div>`;
 }
 
@@ -1119,26 +1129,10 @@ function renderTableau(){
   const acceptes = tous.filter(c=>c.d.statut==="accepte").length;
   const rejetes = tous.filter(c=>c.d.statut==="rejete").length;
   el("kpis").innerHTML = `
-    <div class="kpi">
-      <span class="eyebrow">CV reçus</span>
-      <span class="kpi-val">${tous.length}</span>
-      <span class="kpi-note">${state.candidats.filter(c=>c.etape==="ecarte").length} écarté(s) du pipeline</span>
-    </div>
-    <div class="kpi">
-      <span class="eyebrow">Score médian</span>
-      <span class="kpi-val">${mediane(actives.map(c=>c.s.total))}<small>/100</small></span>
-      <span class="kpi-note">Bassin actif de ${actives.length} candidature(s)</span>
-    </div>
-    <div class="kpi">
-      <span class="eyebrow">Taux d'acceptation</span>
-      <span class="kpi-val" style="color:var(--good)">${tous.length?Math.round(acceptes/tous.length*100):0}<small>%</small></span>
-      <span class="kpi-note">${acceptes} candidature(s) acceptée(s)</span>
-    </div>
-    <div class="kpi">
-      <span class="eyebrow">Taux de rejet</span>
-      <span class="kpi-val" style="color:var(--bad)">${tous.length?Math.round(rejetes/tous.length*100):0}<small>%</small></span>
-      <span class="kpi-note">${rejetes} rejeté(s), ${tous.filter(c=>c.d.statut==="revoir").length} à revoir</span>
-    </div>`;
+    <div class="stat"><span class="stat-val">${tous.length}</span><span class="stat-lab">CV reçus</span></div>
+    <div class="stat"><span class="stat-val">${mediane(actives.map(c=>c.s.total))} %</span><span class="stat-lab">Score médian</span></div>
+    <div class="stat"><span class="stat-val">${tous.length?Math.round(acceptes/tous.length*100):0} %</span><span class="stat-lab">Taux d'acceptation</span></div>
+    <div class="stat"><span class="stat-val">${state.candidats.filter(c=>c.etape==="nouveau").length}</span><span class="stat-lab">Encore à traiter</span></div>`;
 
   el("decision-bloc").innerHTML = blocDecision(tous);
   el("chart-funnel").innerHTML = chartFunnel();
@@ -1202,9 +1196,6 @@ const COLONNES = [
   { id:"score", label:"Score", tri:"score" },
   { id:"decision", label:"Décision", tri:"decision" },
   { id:"comp", label:"Compétences", tri:"comp" },
-  { id:"exp", label:"Exp.", tri:"annees" },
-  { id:"form", label:"Formation", tri:"formation" },
-  { id:"lieu", label:"Lieu", tri:"lieu" },
   { id:"etape", label:"Étape", tri:"etape" },
   { id:"recu", label:"Reçu", tri:"recu" }
 ];
@@ -1248,13 +1239,10 @@ function renderListe(){
       </td>
       <td><span class="stamp ${st.cls}" data-tip="${esc(c.d.motifs[0]||"")}">${st.label}</span></td>
       <td class="num">${c.s.obtenues.length}<span style="color:var(--ink-3)">/${comps().length}</span></td>
-      <td class="num">${c.annees} an${c.annees>1?"s":""}</td>
-      <td class="num">${anneesFormationDe(c)} ans</td>
-      <td>${esc(c.lieu)}</td>
       <td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="color:${ETAPE[c.etape].couleur}"></span>${esc(ETAPE[c.etape].label)}</span></td>
       <td class="num" style="color:var(--ink-3)">${esc(depuisCourt(c.recu))}</td>
     </tr>`;
-  }).join("") : `<tr><td colspan="10"><p class="empty">Aucune candidature ne correspond aux filtres.</p></td></tr>`;
+  }).join("") : `<tr><td colspan="7"><p class="empty">Aucune candidature ne correspond aux filtres.</p></td></tr>`;
 
   el("liste-count").textContent = liste.length+" candidature(s)";
   const tout = el("sel-tout");
@@ -1407,16 +1395,24 @@ function renderCriteres(){
       </div>`).join("") || '<p class="note-fine">Aucune compétence. Ajoutez-en une pour que le critère compte.</p>';
   }
 
+  const zone = (k, largeur, texte) => largeur > 6
+    ? `<span style="width:${largeur}%;background:${STATUTS[k].couleur}">${texte}</span>`
+    : `<span style="width:${largeur}%;background:${STATUTS[k].couleur}"></span>`;
   el("seuils").innerHTML = `
-    <div class="seuil-row">
-      <label for="s-accept">Seuil d'acceptation <span class="aide" style="color:var(--ink-3)">au-dessus, le CV est accepté</span></label>
-      <span class="mono" style="color:var(--good)">${g.seuilAccept} %</span>
-      <input id="s-accept" type="range" min="1" max="100" step="1" value="${g.seuilAccept}">
+    <div class="zone">
+      ${zone("rejete", g.seuilRejet, "Rejeté")}
+      ${zone("revoir", g.seuilAccept-g.seuilRejet, "À revoir")}
+      ${zone("accepte", 100-g.seuilAccept, "Accepté")}
     </div>
     <div class="seuil-row">
-      <label for="s-rejet">Seuil de rejet <span class="aide" style="color:var(--ink-3)">en dessous, le CV est rejeté</span></label>
+      <label for="s-rejet">En dessous de ce score, le CV est rejeté</label>
       <span class="mono" style="color:var(--bad)">${g.seuilRejet} %</span>
       <input id="s-rejet" type="range" min="0" max="99" step="1" value="${g.seuilRejet}">
+    </div>
+    <div class="seuil-row">
+      <label for="s-accept">Au-dessus de ce score, le CV est accepté</label>
+      <span class="mono" style="color:var(--good)">${g.seuilAccept} %</span>
+      <input id="s-accept" type="range" min="1" max="100" step="1" value="${g.seuilAccept}">
     </div>`;
 
   el("regles").innerHTML = REGLES.map(r=>{
@@ -1466,7 +1462,7 @@ function renderCriteres(){
 /* =====================================================================
    13. Rail et rendu global
    ===================================================================== */
-function renderRail(){
+function renderFiltres(){
   const g = state.grille, cont = el("criteres");
   if(!cont.children.length){
     cont.innerHTML = CRITERES.map(cr=>`
@@ -1505,9 +1501,11 @@ function renderRail(){
   if(document.activeElement !== el("f-q") && el("f-q").value !== state.filtres.q) el("f-q").value = state.filtres.q;
   if(+el("f-score").value !== state.filtres.scoreMin) el("f-score").value = state.filtres.scoreMin;
   el("f-score-val").textContent = state.filtres.scoreMin;
-  const bf = el("f-favori"), be = el("f-ecartes");
-  bf.setAttribute("aria-pressed", state.filtres.favori); bf.textContent = state.filtres.favori?"Oui":"Non";
-  be.setAttribute("aria-pressed", state.filtres.ecartes); be.textContent = state.filtres.ecartes?"Oui":"Non";
+  el("f-favori").setAttribute("aria-pressed", state.filtres.favori);
+  el("f-ecartes").setAttribute("aria-pressed", state.filtres.ecartes);
+  const f = state.filtres;
+  const actifs = (f.q?1:0)+(f.scoreMin?1:0)+f.competences.length+f.statuts.length+(f.favori?1:0)+(f.ecartes?1:0);
+  el("btn-plus").textContent = actifs ? `Plus de filtres · ${actifs}` : "Plus de filtres";
   el("btn-anon").setAttribute("aria-pressed", state.anonyme);
 }
 
@@ -1519,7 +1517,8 @@ function render(){
     b.setAttribute("aria-selected", actif);
     el("view-"+b.dataset.vue).hidden = !actif;
   });
-  renderRail();
+  el("filtres").hidden = !["pipeline","liste"].includes(state.vue);
+  renderFiltres();
   if(state.vue==="tableau")  renderTableau();
   if(state.vue==="pipeline") renderPipeline();
   if(state.vue==="liste")    renderListe();
@@ -1551,7 +1550,6 @@ el("btn-poids-reset").addEventListener("click", ()=>{ state.grille.poids = grill
 /* Filtres */
 el("f-q").addEventListener("input", e=>{
   state.filtres.q = e.target.value;
-  if(state.vue==="tableau" || state.vue==="criteres") state.vue = "liste";
   render();
 });
 el("f-score").addEventListener("input", e=>{ state.filtres.scoreMin = +e.target.value; render(); });
@@ -1559,7 +1557,6 @@ el("f-decision").addEventListener("click", e=>{
   const k = e.target.dataset.statut; if(!k) return;
   const l = state.filtres.statuts;
   state.filtres.statuts = l.includes(k) ? l.filter(x=>x!==k) : l.concat(k);
-  if(state.vue==="tableau" || state.vue==="criteres") state.vue = "liste";
   render();
 });
 el("f-competences").addEventListener("click", e=>{
@@ -1570,6 +1567,10 @@ el("f-competences").addEventListener("click", e=>{
 });
 el("f-favori").addEventListener("click", ()=>{ state.filtres.favori = !state.filtres.favori; render(); });
 el("f-ecartes").addEventListener("click", ()=>{ state.filtres.ecartes = !state.filtres.ecartes; render(); });
+el("btn-plus").addEventListener("click", ()=>{
+  const p = el("filtres-plus"), ouvert = p.classList.toggle("ouvert");
+  el("btn-plus").setAttribute("aria-expanded", ouvert);
+});
 el("btn-filtres-reset").addEventListener("click", ()=>{
   state.filtres = { q:"", scoreMin:0, competences:[], statuts:[], favori:false, ecartes:false }; render();
 });
@@ -1587,7 +1588,8 @@ el("btn-vider").addEventListener("click", ()=>{
 });
 
 /* Classement automatique selon la décision */
-el("btn-appliquer").addEventListener("click", ()=>{
+el("decision-bloc").addEventListener("click", e=>{
+  if(!e.target.closest("#btn-appliquer")) return;
   const bougent = notes().filter(c=>["nouveau","ecarte"].includes(c.etape) && c.etape!==etapeSuggeree(c.d));
   if(!bougent.length) return alert("Rien à reclasser : les nouveaux CV et les écartés sont déjà à l'étape que la décision indique.");
   if(!confirm(bougent.length+" candidature(s) vont changer d'étape. Les dossiers déjà en présélection, en entretien ou en offre ne sont pas touchés. Continuer ?")) return;

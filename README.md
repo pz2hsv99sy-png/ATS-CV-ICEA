@@ -61,9 +61,11 @@ motif exact.
 
 ## Ce que ça fait d'autre
 
-- **Onglet Critères.** Compétences ajoutables, renommables, pondérées, avec leurs
-  mots-clés cherchés dans le texte du CV. Exigences du poste, seuils, règles.
-  Un aperçu montre l'effet de vos réglages sur le bassin et les principales causes de rejet.
+- **Onglet Critères.** Trois nombres suffisent pour démarrer : années d'expérience, années
+  d'études, nombre de langues. En dessous, les compétences avec leurs mots-clés, puis une
+  échelle en trois zones — rejeté, à revoir, accepté — pour placer les seuils. Le reste
+  (plafonds, règles de rejet, pondérations) est replié tant que vous n'en avez pas besoin.
+  Un aperçu montre l'effet de vos réglages et les principales causes de rejet.
 - **Dépôt de CV.** PDF, TXT, Markdown ou texte collé. L'analyseur extrait coordonnées,
   lieu, années d'expérience, diplôme, langues et compétences, puis décide. Le classement
   dans le pipeline peut être automatique.
@@ -72,7 +74,9 @@ motif exact.
 - **Pipeline.** Cinq colonnes en glisser-déposer. « Classer selon la décision » applique
   l'avis de l'algorithme aux nouveaux CV et aux écartés, sans toucher aux dossiers déjà
   engagés dans un processus humain.
-- **Liste.** Tableau triable et filtrable, sélection multiple, déplacement en lot.
+- **Liste.** Tableau triable et filtrable — candidature, score, décision, compétences, étape,
+  date — avec sélection multiple et déplacement en lot. Expérience, formation, langues et lieu
+  se lisent dans la fiche.
 - **Mode anonyme.** Masque nom, courriel et téléphone pendant la présélection, jusque dans
   l'export.
 - **Export.** CSV ou JSON, décision et motif compris.
